@@ -1,0 +1,7 @@
+.venv/
+/media/
+/private/
+/static/
+__pycache__/
+**/settings/local.py
+db.sqlite3
