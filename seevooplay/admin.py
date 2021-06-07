@@ -10,9 +10,9 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(Guest)
 class GuestAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created', 'modified')
+    list_display = ('__str__', 'created', 'modified')
 
 
 @admin.register(Reply)
 class ReplyAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'created', 'modified')

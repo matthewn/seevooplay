@@ -60,5 +60,8 @@ class Reply(TimeStampedModel):
         choices=ReplyStatus.choices,
     )
 
+    def __str__(self):
+        return f'{self.event.name}: {self.guest}: {self.status}'
+
     class Meta:
         verbose_name_plural = 'replies'
