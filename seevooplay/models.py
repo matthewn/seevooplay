@@ -10,10 +10,7 @@ class Guest(TimeStampedModel, UUIDModel):
 
 class Event(TimeStampedModel):
     name = models.CharField(max_length=64)
-    host = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
+    host = models.CharField(max_length=64)
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField(blank=True)
     location_name = models.CharField(max_length=64)
