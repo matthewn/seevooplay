@@ -2,17 +2,24 @@ from django.conf import settings
 from django.db import models
 from model_utils.models import TimeStampedModel, UUIDModel
 
+import pytz
+
+TZ = pytz.timezone(settings.TIME_ZONE)
+
 
 class Guest(TimeStampedModel, UUIDModel):
     name = models.CharField(max_length=64)
     email = models.EmailField()
+
+    def __str__(self):
+        return self.name
 
 
 class Event(TimeStampedModel):
     name = models.CharField(max_length=64)
     host = models.CharField(max_length=64)
     start_datetime = models.DateTimeField()
-    end_datetime = models.DateTimeField(blank=True)
+    end_datetime = models.DateTimeField(blank=True, null=True)
     location_name = models.CharField(max_length=64)
     location_address = models.CharField(
         blank=True,
@@ -25,9 +32,12 @@ class Event(TimeStampedModel):
         height_field='image_height',
         width_field='image_width',
     )
-    image_height = models.PositiveIntegerField(blank=True)
-    image_width = models.PositiveIntegerField(blank=True)
+    image_height = models.PositiveIntegerField(blank=True, null=True)
+    image_width = models.PositiveIntegerField(blank=True, null=True)
     guests = models.ManyToManyField(Guest, blank=True)
+
+    def __str__(self):
+        return f'{self.name} ({self.start_datetime.astimezone(TZ).strftime("%x %I:%M %p %Z")})'
 
 
 class ReplyStatus(models.TextChoices):

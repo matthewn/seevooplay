@@ -5,12 +5,12 @@ from .models import Event, Guest, Reply
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'created', 'modified')
 
 
 @admin.register(Guest)
 class GuestAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'created', 'modified')
 
 
 @admin.register(Reply)
