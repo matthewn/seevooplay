@@ -9,7 +9,7 @@ TZ = pytz.timezone(settings.TIME_ZONE)
 
 class Guest(TimeStampedModel, UUIDModel):
     name = models.CharField(max_length=64)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
 
     def __str__(self):
         return self.name
@@ -56,8 +56,14 @@ class Reply(TimeStampedModel):
         on_delete=models.CASCADE,
     )
     status = models.CharField(
+        blank=True,
         max_length=1,
         choices=ReplyStatus.choices,
+    )
+    extra_guests = models.PositiveSmallIntegerField(blank=True, null=True)
+    comment = models.CharField(
+        blank=True,
+        max_length=512,
     )
 
     def __str__(self):
