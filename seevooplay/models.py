@@ -52,3 +52,6 @@ class Reply(TimeStampedModel):
         max_length=1,
         choices=ReplyStatus.choices,
     )
+
+    class Meta:
+        verbose_name_plural = 'replies'
