@@ -35,6 +35,7 @@ class Event(TimeStampedModel):
     image_height = models.PositiveIntegerField(blank=True, null=True)
     image_width = models.PositiveIntegerField(blank=True, null=True)
     guests = models.ManyToManyField(Guest, blank=True)
+    raw_guests = models.TextField(blank=True)
 
     def __str__(self):
         return f'{self.name} ({self.start_datetime.astimezone(TZ).strftime("%x %I:%M %p %Z")})'
