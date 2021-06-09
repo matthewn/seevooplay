@@ -39,6 +39,8 @@ INSTALLED_APPS = [
 
     'config.apps.CustomAdminConfig',  # replaces django.contrib.admin
     'seevooplay',
+
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

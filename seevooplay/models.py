@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils.html import mark_safe
 from model_utils.models import TimeStampedModel, UUIDModel
 
 import pytz
@@ -11,8 +12,11 @@ class Guest(TimeStampedModel, UUIDModel):
     name = models.CharField(max_length=64)
     email = models.EmailField(unique=True)
 
+    class Meta:
+        ordering = ('name',)
+
     def __str__(self):
-        return self.name
+        return f'{self.name} <{self.email}>'
 
 
 class Event(TimeStampedModel):
@@ -29,13 +33,12 @@ class Event(TimeStampedModel):
     image = models.ImageField(
         blank=True,
         upload_to='event_images/',
-        height_field='image_height',
-        width_field='image_width',
     )
-    image_height = models.PositiveIntegerField(blank=True, null=True)
-    image_width = models.PositiveIntegerField(blank=True, null=True)
-    guests = models.ManyToManyField(Guest, blank=True)
-    raw_guests = models.TextField(blank=True)
+    guests = models.ManyToManyField(Guest, blank=True, verbose_name='Invited guests')
+    invitees = models.TextField(
+        blank=True,
+        help_text=mark_safe('Enter a list of email addresses separated by commas or new lines. You can put full names before email addresses, and we\'ll try to figure the whole mess out. Quotes and angle brackets will be ignored. Example input:<pre>    prince@example.org, madonna@example.org</pre><pre>    "Rip Torn" &lt;rip_torn@example.org&gt;</pre><pre>    Tim Berners Lee tim@example.org</pre><b><i>New invitees will be immediately emailed!</b></i>')
+    )
 
     def __str__(self):
         return f'{self.name} ({self.start_datetime.astimezone(TZ).strftime("%x %I:%M %p %Z")})'
