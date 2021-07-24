@@ -18,4 +18,4 @@ class CustomAdminSite(admin.AdminSite):
             'seevooplay',
             'auth',
         ]
-        return [d for lbl in neworder for d in app_list if d["app_label"] == lbl]
+        return [d for lbl in neworder for d in app_list if d['app_label'] == lbl]

@@ -34,7 +34,7 @@ class Event(TimeStampedModel):
         blank=True,
         upload_to='event_images/',
     )
-    guests = models.ManyToManyField(Guest, blank=True, verbose_name='Invited guests')
+    guests = models.ManyToManyField(Guest, blank=True, through='Reply', verbose_name='Invited guests')
     invitees = models.TextField(
         blank=True,
         help_text=mark_safe('Enter a list of email addresses separated by commas or new lines. You can put full names before email addresses, and we\'ll try to figure the whole mess out. Quotes and angle brackets will be ignored. Example input:<pre>    prince@example.org, madonna@example.org</pre><pre>    "Rip Torn" &lt;rip_torn@example.org&gt;</pre><pre>    Tim Berners Lee tim@example.org</pre><b><i>New invitees will be immediately emailed!</b></i>')
@@ -59,6 +59,7 @@ class Reply(TimeStampedModel):
         Guest,
         on_delete=models.CASCADE,
     )
+    has_viewed = models.BooleanField(default=False)
     status = models.CharField(
         blank=True,
         max_length=1,
@@ -70,8 +71,8 @@ class Reply(TimeStampedModel):
         max_length=512,
     )
 
+    class Meta:
+        verbose_name_plural = 'Replies'
+
     def __str__(self):
         return f'{self.event.name}: {self.guest}: {self.status}'
-
-    class Meta:
-        verbose_name_plural = 'replies'

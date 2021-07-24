@@ -1,0 +1,52 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}Email guests {{ block.super }}{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "seevooplay/css/email_guests.css" %}">
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} email-guests{% endblock %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+</div>
+{% endblock %}
+{% endif %}
+
+{% block coltype %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h2>Email guests who:</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="field-wrapper {{ field.html_name }}">
+                {% if field.widget_type == 'checkbox' %}
+                    {{ field.errors }}
+                    {{ field }}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {% if field.help_text %}
+                        <p class="help">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                {% else %}
+                    {{ field.errors }}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <p class="help">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+        <input type="submit" value="Send email">
+    </form>
+
+</div>
+{% endblock %}

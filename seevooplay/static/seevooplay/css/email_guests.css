@@ -1,0 +1,22 @@
+h2 {
+  margin-bottom: 1rem;
+}
+.field-wrapper {
+  margin-bottom: 1rem;
+}
+.field-wrapper.subject,
+.field-wrapper.message {
+  margin: 2rem 0;
+}
+.field-wrapper.subject label,
+.field-wrapper.message label {
+  display: block;
+}
+.field-wrapper.subject input,
+.field-wrapper.message textarea {
+  width: 500px;
+}
+.field-wrapper.message textarea {
+  font-family: monospace;
+  height: 40vh;
+}
