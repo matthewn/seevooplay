@@ -19,6 +19,6 @@ from django.urls import path
 from .views import email_guests
 
 urlpatterns = [
-    path('admin/email_guests/', email_guests, name='email_guests'),
+    path('admin/email_guests/<int:event_id>/', email_guests, name='email_guests'),
     path('admin/', admin.site.urls),
 ]
