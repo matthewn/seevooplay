@@ -35,33 +35,40 @@ def email_guests(request, event_id):
                 replies = Reply.objects.filter(event=event, status='')
                 people_to_email.append([reply.guest for reply in replies])
 
+            # flatten our list of lists
+            people_to_email = [item for sublist in people_to_email for item in sublist]
+            # change to a set (dedupe & prepare for set operations)
+            people_to_email = set(people_to_email)
+
             if form.cleaned_data['want_have_viewed']:
                 replies = Reply.objects.filter(event=event, has_viewed=True)
-                people_to_email.append([reply.guest for reply in replies])
+                have_viewed = set([reply.guest for reply in replies])
 
             if form.cleaned_data['want_have_not_viewed']:
                 replies = Reply.objects.filter(event=event, has_viewed=False)
-                people_to_email.append([reply.guest for reply in replies])
+                have_not_viewed = set([reply.guest for reply in replies])
+
+            if 'have_viewed' in locals() and 'have_not_viewed' in locals():
+                group_1 = people_to_email.intersection(have_viewed)
+                group_2 = people_to_email.intersection(have_not_viewed)
+                people_to_email = group_1.union(group_2)
+            elif 'have_viewed' in locals():
+                people_to_email = people_to_email.intersection(have_viewed)
+            elif 'have_not_viewed' in locals():
+                people_to_email = people_to_email.intersection(have_not_viewed)
 
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
 
-            # flatten our list of lists
-            people_to_email = [item for sublist in people_to_email for item in sublist]
-            # dedupe the list
-            people_to_email = list(set(people_to_email))
-
-            print(f'{subject} {message}')
-
             messages.add_message(
                 request,
                 messages.INFO,
-                f'event id is {event}',
+                f'event id: {event}, subject: {subject}, message: {message}',
             )
             messages.add_message(
                 request,
                 messages.INFO,
-                f'people to email are {people_to_email}',
+                f'people to email: {people_to_email}',
             )
             return HttpResponseRedirect(
                 reverse('admin:seevooplay_event_change', args=(event_id,))

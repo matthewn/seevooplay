@@ -16,6 +16,9 @@ class StatusesInline(admin.TabularInline):
     extra = 0
     verbose_name_plural = 'Invitees & Responses'
 
+    class Media:
+        css = {'all': ('seevooplay/css/seevooplay.css',)}
+
     def has_add_permission(self, request, obj):
         return False
 
@@ -39,9 +42,6 @@ class EventAdmin(admin.ModelAdmin):
     )
     inlines = (StatusesInline,)
     list_display = ('__str__', 'created', 'modified')
-
-    class Media:
-        css = {'all': ('seevooplay/css/seevooplay.css',)}
 
     def save_model(self, request, obj, form, change):
         """

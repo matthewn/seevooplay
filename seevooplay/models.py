@@ -50,7 +50,7 @@ class Event(TimeStampedModel):
             <pre>    prince@example.org, madonna@example.org</pre>
             <pre>    "Rip Torn" &lt;rip_torn@example.org&gt;</pre>
             <pre>    Tim Berners Lee tim@example.org</pre>
-            <b><i>New invitees will be immediately emailed!</b></i>
+            <big><b><i>New invitees will be immediately emailed!</b></i></big>
         ''')
     )
 

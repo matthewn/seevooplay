@@ -30,6 +30,9 @@
         {% for field in form %}
             <div class="field-wrapper {{ field.html_name }}">
                 {% if field.widget_type == 'checkbox' %}
+                    {% if field.name == 'want_have_viewed' %}
+                        <p><b>AND:</b></p>
+                    {% endif %}
                     {{ field.errors }}
                     {{ field }}
                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
