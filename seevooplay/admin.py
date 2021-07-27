@@ -7,6 +7,7 @@ from .models import (
     Guest,
     Reply,
 )
+from .utils import send_emails
 
 
 class StatusesInline(admin.TabularInline):
@@ -78,15 +79,23 @@ class EventAdmin(admin.ModelAdmin):
         for guest in all_guests:
             if guest not in obj.guests.all():
                 new_guests.append(guest)
-        for guest in new_guests:
-            # TODO EMAIL NEW GUESTS HERE
-            messages.add_message(
-                request,
-                messages.INFO,
-                f'{guest.name} added to invitees for {obj.name}. Email sent to {guest.email}.',
-            )
+
         super().save_model(request, obj, form, change)
         obj.guests.set(all_guests)
+
+        new_guests_dsp = ', '.join([g.name for g in new_guests])
+        messages.add_message(
+            request,
+            messages.INFO,
+            f'New invitees added for {obj.name}: {new_guests_dsp}',
+        )
+        send_emails(
+            request,
+            f'event invitation: {obj.name}',
+            'this is the body of the event invitation',
+            None,  # use DEFAULT_FROM_EMAIL
+            new_guests,
+        )
 
 
 @admin.register(Guest)

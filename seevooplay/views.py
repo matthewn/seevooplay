@@ -7,6 +7,7 @@ from django.urls import reverse
 
 from .forms import EmailGuestsForm
 from .models import Event, Reply
+from .utils import send_emails
 
 
 @staff_member_required
@@ -17,28 +18,28 @@ def email_guests(request, event_id):
         # create a form instance and populate it with data from the request
         form = EmailGuestsForm(request.POST)
         if form.is_valid():
-            people_to_email = []
+            recipients = []
 
             if form.cleaned_data['want_reply_yes']:
                 replies = Reply.objects.filter(event=event, status='Y')
-                people_to_email.append([reply.guest for reply in replies])
+                recipients.append([reply.guest for reply in replies])
 
             if form.cleaned_data['want_reply_no']:
                 replies = Reply.objects.filter(event=event, status='N')
-                people_to_email.append([reply.guest for reply in replies])
+                recipients.append([reply.guest for reply in replies])
 
             if form.cleaned_data['want_reply_maybe']:
                 replies = Reply.objects.filter(event=event, status='M')
-                people_to_email.append([reply.guest for reply in replies])
+                recipients.append([reply.guest for reply in replies])
 
             if form.cleaned_data['want_reply_none']:
                 replies = Reply.objects.filter(event=event, status='')
-                people_to_email.append([reply.guest for reply in replies])
+                recipients.append([reply.guest for reply in replies])
 
-            people_to_email = [  # flatten the list-of-lists
-                item for sublist in people_to_email for item in sublist
+            recipients = [  # flatten the list-of-lists
+                item for sublist in recipients for item in sublist
             ]
-            people_to_email = set(people_to_email)
+            recipients = set(recipients)
 
             if form.cleaned_data['want_have_viewed']:
                 replies = Reply.objects.filter(event=event, has_viewed=True)
@@ -50,18 +51,18 @@ def email_guests(request, event_id):
 
             # time for some set operations!
             if 'have_viewed' in locals() and 'have_not_viewed' in locals():
-                group_1 = people_to_email.intersection(have_viewed)
-                group_2 = people_to_email.intersection(have_not_viewed)
-                people_to_email = group_1.union(group_2)
+                group_1 = recipients.intersection(have_viewed)
+                group_2 = recipients.intersection(have_not_viewed)
+                recipients = group_1.union(group_2)
             elif 'have_viewed' in locals():
-                people_to_email = people_to_email.intersection(have_viewed)
+                recipients = recipients.intersection(have_viewed)
             elif 'have_not_viewed' in locals():
-                people_to_email = people_to_email.intersection(have_not_viewed)
+                recipients = recipients.intersection(have_not_viewed)
 
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
 
-            # TODO: SEND THE MESSAGES HERE
+            send_emails(request, subject, message, None, recipients)
 
             messages.add_message(
                 request,
@@ -71,7 +72,7 @@ def email_guests(request, event_id):
             messages.add_message(
                 request,
                 messages.INFO,
-                f'people to email: {people_to_email}',
+                f'people to email: {recipients}',
             )
             return HttpResponseRedirect(
                 reverse('admin:seevooplay_event_change', args=(event_id,))
