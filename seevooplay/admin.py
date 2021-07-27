@@ -1,4 +1,6 @@
-from django.contrib import admin
+from django.contrib import admin, messages
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 
 from .models import (
     Event,
@@ -48,7 +50,7 @@ class EventAdmin(admin.ModelAdmin):
         Do some things with the raw data in the 'invitees' field.
 
         (1) Convert the raw guestlist from 'invitees' into Guest objects.
-        (2) Email the invite to guests who haven't been invited to this event.
+        (2) Email the invite to newly-added guests.
         """
         invitees = (
             obj.invitees.replace('"', '').replace('<', '').replace('>', '')
@@ -59,17 +61,30 @@ class EventAdmin(admin.ModelAdmin):
         for line in lines:
             words = line.split(' ')
             email = words[-1]
-            name = ' '.join(words[:-1])
-            # TODO this needs to be wrapped in a try/catch
-            guest = Guest.objects.get_or_create(email=email)[0]
-            guest.name = name or email
-            guest.save()
-            all_guests.append(guest)
+            try:
+                validate_email(email)
+                name = ' '.join(words[:-1])
+                guest = Guest.objects.get_or_create(email=email)[0]
+                guest.name = name or email
+                guest.save()
+                all_guests.append(guest)
+            except ValidationError:
+                messages.add_message(
+                    request,
+                    messages.ERROR,
+                    f'{email} is not a valid email address.',
+                )
         new_guests = []
         for guest in all_guests:
             if guest not in obj.guests.all():
                 new_guests.append(guest)
-        # TODO EMAIL NEW GUESTS HERE
+        for guest in new_guests:
+            # TODO EMAIL NEW GUESTS HERE
+            messages.add_message(
+                request,
+                messages.INFO,
+                f'{guest.name} added to invitees for {obj.name}. Email sent to {guest.email}.',
+            )
         super().save_model(request, obj, form, change)
         obj.guests.set(all_guests)
 

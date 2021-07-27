@@ -35,9 +35,9 @@ def email_guests(request, event_id):
                 replies = Reply.objects.filter(event=event, status='')
                 people_to_email.append([reply.guest for reply in replies])
 
-            # flatten our list of lists
-            people_to_email = [item for sublist in people_to_email for item in sublist]
-            # change to a set (dedupe & prepare for set operations)
+            people_to_email = [  # flatten the list-of-lists
+                item for sublist in people_to_email for item in sublist
+            ]
             people_to_email = set(people_to_email)
 
             if form.cleaned_data['want_have_viewed']:
@@ -48,6 +48,7 @@ def email_guests(request, event_id):
                 replies = Reply.objects.filter(event=event, has_viewed=False)
                 have_not_viewed = set([reply.guest for reply in replies])
 
+            # time for some set operations!
             if 'have_viewed' in locals() and 'have_not_viewed' in locals():
                 group_1 = people_to_email.intersection(have_viewed)
                 group_2 = people_to_email.intersection(have_not_viewed)
@@ -59,6 +60,8 @@ def email_guests(request, event_id):
 
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
+
+            # TODO: SEND THE MESSAGES HERE
 
             messages.add_message(
                 request,
