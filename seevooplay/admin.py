@@ -40,6 +40,9 @@ class EventAdmin(admin.ModelAdmin):
     inlines = (StatusesInline,)
     list_display = ('__str__', 'created', 'modified')
 
+    class Media:
+        css = {'all': ('seevooplay/css/seevooplay.css',)}
+
     def save_model(self, request, obj, form, change):
         """
         Do some things with the raw data in the 'invitees' field.
@@ -76,3 +79,11 @@ class GuestAdmin(admin.ModelAdmin):
     inlines = (StatusesInline,)
     list_display = ('__str__', 'created', 'modified')
     readonly_fields = ('email',)
+
+
+@admin.register(Reply)
+class ReplyAdmin(admin.ModelAdmin):
+    """
+    For testing purposes only!
+    """
+    list_display = ('__str__', 'created', 'modified')

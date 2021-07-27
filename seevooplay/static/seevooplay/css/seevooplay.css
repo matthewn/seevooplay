@@ -1,0 +1,7 @@
+tr.dynamic-reply_set > td:first-child > p {
+  display: none;
+}
+
+.inline-group .tabular tr.has_original td {
+  padding-top: 1em;
+}

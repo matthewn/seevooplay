@@ -11,14 +11,11 @@ from .models import Event, Reply
 
 @staff_member_required
 def email_guests(request, event_id):
-    # get the event we're dealing with
     event = Event.objects.get(id=event_id)
 
-    # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
+        # create a form instance and populate it with data from the request
         form = EmailGuestsForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
             people_to_email = []
 
