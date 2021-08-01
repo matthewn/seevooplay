@@ -20,7 +20,7 @@ class StatusesInline(admin.TabularInline):
     verbose_name_plural = 'Invitees & Responses'
 
     class Media:
-        css = {'all': ('seevooplay/css/seevooplay.css',)}
+        css = {'all': ('seevooplay/css/admin.css',)}
 
     def has_add_permission(self, request, obj):
         return False
@@ -83,19 +83,20 @@ class EventAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
         obj.guests.set(all_guests)
 
-        new_guests_dsp = ', '.join([g.name for g in new_guests])
-        messages.add_message(
-            request,
-            messages.INFO,
-            f'New invitees added for {obj.name}: {new_guests_dsp}',
-        )
-        send_emails(
-            request,
-            f'event invitation: {obj.name}',
-            'this is the body of the event invitation',
-            None,  # use DEFAULT_FROM_EMAIL
-            new_guests,
-        )
+        if new_guests:
+            new_guests_dsp = ', '.join([g.name for g in new_guests])
+            messages.add_message(
+                request,
+                messages.INFO,
+                f'New invitees added for {obj.name}: {new_guests_dsp}',
+            )
+            send_emails(
+                request,
+                f'event invitation: {obj.name}',
+                'this is the body of the event invitation',  # TODO
+                None,  # use DEFAULT_FROM_EMAIL
+                new_guests,
+            )
 
 
 @admin.register(Guest)

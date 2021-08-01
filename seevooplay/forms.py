@@ -1,6 +1,27 @@
 from django import forms
 
 
+class ReplyForm(forms.Form):
+    status = forms.ChoiceField(
+        label='Will you attend?',
+        choices=(
+            ('Y', 'Yes'),
+            ('N', 'No'),
+            ('M', 'Maybe'),
+        ),
+        widget=forms.RadioSelect,
+    )
+    extra_guests = forms.IntegerField(
+        initial=0,
+        widget=forms.TextInput,
+    )
+    comment = forms.CharField(
+        label='Comments',
+        widget=forms.Textarea,
+        required=False,
+    )
+
+
 class EmailGuestsForm(forms.Form):
     want_reply_yes = forms.BooleanField(
         initial=True,

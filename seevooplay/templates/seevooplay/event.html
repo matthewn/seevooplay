@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% load debugtools_tags %}
+
+{% block title %}FIXME {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'seevooplay/css/event.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1>{{ event.name }}</h1>
+
+    <div class="event-image">
+        <img alt="" src="{{ event.image.url }}">
+    </div>
+
+    <p class="greeting">
+        {% if guest %}
+            Greetings, {{ guest.name }}!
+        {% else %}
+            Greetings, admin {{ request.user.username }}!
+        {% endif %}
+    </p>
+
+    <table class="event-details">
+        <tr><td>Event:</td><td>{{ event.name }}</td></tr>
+        <tr><td>Host(s):</td><td>{{ event.host }}</td></tr>
+        <tr>
+            <td>When:</td>
+            <td>
+                {{ event.start_datetime }}
+                {% if event.end_datetime %}
+                    &ndash; {{ event.end_datetime }}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Where:</td>
+            <td>
+                {{ event.location_name }}<br>
+                {{ event.location_address }}
+            </td>
+        </tr>
+        <tr><td>Details:</td><td>{{ event.details }}</td></tr>
+    </table>
+
+    <div class="reply-form">
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="field-wrapper {{ field.html_name }}">
+                    {{ field.errors }}
+                    {% if field.name != 'extra_guests' %}
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {% endif %}
+                    {% if field.name == 'extra_guests' %}I will bring {% endif %}
+                    {{ field }}
+                    {% if field.name == 'extra_guests' %} people with me.{% endif %}
+                    {% if field.help_text %}
+                        <p class="help">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <input type="submit" value="post my reply">
+        </form>
+    </div>
+
+    <div class="replies">
+        <ul>YES
+            {% for reply in yes_replies %}
+                <li>{{ reply.guest.name }}</li>
+            {% endfor %}
+        </ul>
+        <ul>NO
+            {% for reply in no_replies %}
+                <li>{{ reply.guest.name }}</li>
+            {% endfor %}
+        </ul>
+        <ul>MAYBE
+            {% for reply in maybe_replies %}
+                <li>{{ reply.guest.name }}</li>
+            {% endfor %}
+        </ul>
+        <ul>NO REPLY
+            {% for reply in none_replies %}
+                <li>{{ reply.guest.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

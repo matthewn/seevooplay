@@ -1,13 +1,52 @@
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.template.response import TemplateResponse
 from django.urls import reverse
 
 
-from .forms import EmailGuestsForm
-from .models import Event, Reply
+from .forms import EmailGuestsForm, ReplyForm
+from .models import Event, Guest, Reply
 from .utils import send_emails
+
+
+def event_page(request, event_id, guest_uuid=None):
+    event = Event.objects.get(id=event_id)
+    replies = Reply.objects.filter(event=event)
+
+    yes_replies = replies.filter(status='Y')
+    no_replies = replies.filter(status='N')
+    maybe_replies = replies.filter(status='M')
+    none_replies = replies.filter(status='')
+
+    if guest_uuid is None:
+        if not request.user.is_staff:
+            raise PermissionDenied
+        else:
+            guest = None
+    else:
+        guest = Guest.objects.get(id=guest_uuid)
+
+    if request.method != 'POST':
+        # anything but a POST, simply render page
+        return TemplateResponse(
+            request,
+            'seevooplay/event.html',
+            {
+                'event': event,
+                'form': ReplyForm,
+                'guest': guest,
+                'yes_replies': yes_replies,
+                'no_replies': no_replies,
+                'maybe_replies': maybe_replies,
+                'none_replies': none_replies,
+            },
+        )
+    else:
+        # TODO process form
+        pass
 
 
 @staff_member_required

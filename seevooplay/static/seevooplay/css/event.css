@@ -1,0 +1,22 @@
+.event-image img {
+  float: right;
+  max-width: 300px;
+}
+
+.event-details tr {
+  vertical-align: top;
+}
+.event-details td {
+  padding: 0.5rem 0;
+}
+.event-details td:first-child {
+  padding-right: 1rem;
+}
+
+.reply-form {
+  margin: 2rem 0;
+}
+
+.replies {
+  margin: 2rem 0;
+}
