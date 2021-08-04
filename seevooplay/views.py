@@ -37,35 +37,19 @@ def event_page(request, event_id, guest_uuid=None):
 
     if request.method == 'POST':
         form = ReplyForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() and guest:
             guest_reply.status = form.cleaned_data['status']
             guest_reply.extra_guests = form.cleaned_data['extra_guests']
             guest_reply.comment = form.cleaned_data['comment']
             guest_reply.save()
 
-            messages.add_message(
-                request,
-                messages.INFO,
-                'Thank you for your reply!',
-            )
+            messages.add_message(request, messages.INFO, 'Thank you for your reply!')
             if guest_reply.status == 'Y':
-                messages.add_message(
-                    request,
-                    messages.INFO,
-                    'We look forward to seeing you!',
-                )
+                messages.add_message(request, messages.INFO, 'We look forward to seeing you!')
             if guest_reply.status == 'M':
-                messages.add_message(
-                    request,
-                    messages.INFO,
-                    'We hope you can make it!',
-                )
+                messages.add_message(request, messages.INFO, 'We hope you can make it!')
             if guest_reply.status == 'N':
-                messages.add_message(
-                    request,
-                    messages.INFO,
-                    'We will miss you!',
-                )
+                messages.add_message(request, messages.INFO, 'We will miss you!')
     else:
         if guest:
             form = ReplyForm(
@@ -76,7 +60,7 @@ def event_page(request, event_id, guest_uuid=None):
                 }
             )
         else:
-            form = ReplyForm
+            form = ReplyForm()
 
     return TemplateResponse(
         request,
