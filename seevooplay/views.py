@@ -29,24 +29,68 @@ def event_page(request, event_id, guest_uuid=None):
     else:
         guest = Guest.objects.get(id=guest_uuid)
 
-    if request.method != 'POST':
-        # anything but a POST, simply render page
-        return TemplateResponse(
-            request,
-            'seevooplay/event.html',
-            {
-                'event': event,
-                'form': ReplyForm,
-                'guest': guest,
-                'yes_replies': yes_replies,
-                'no_replies': no_replies,
-                'maybe_replies': maybe_replies,
-                'none_replies': none_replies,
-            },
-        )
+    if guest:
+        guest_reply = replies.get(guest=guest)
+        if guest_reply.has_viewed is False:
+            guest_reply.has_viewed = True
+            guest_reply.save()
+
+    if request.method == 'POST':
+        form = ReplyForm(request.POST)
+        if form.is_valid():
+            guest_reply.status = form.cleaned_data['status']
+            guest_reply.extra_guests = form.cleaned_data['extra_guests']
+            guest_reply.comment = form.cleaned_data['comment']
+            guest_reply.save()
+
+            messages.add_message(
+                request,
+                messages.INFO,
+                'Thank you for your reply!',
+            )
+            if guest_reply.status == 'Y':
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    'We look forward to seeing you!',
+                )
+            if guest_reply.status == 'M':
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    'We hope you can make it!',
+                )
+            if guest_reply.status == 'N':
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    'We will miss you!',
+                )
     else:
-        # TODO process form
-        pass
+        if guest:
+            form = ReplyForm(
+                initial={
+                    'status': guest_reply.status,
+                    'extra_guests': guest_reply.extra_guests,
+                    'comment': guest_reply.comment,
+                }
+            )
+        else:
+            form = ReplyForm
+
+    return TemplateResponse(
+        request,
+        'seevooplay/event.html',
+        {
+            'event': event,
+            'form': form,
+            'guest': guest,
+            'yes_replies': yes_replies,
+            'no_replies': no_replies,
+            'maybe_replies': maybe_replies,
+            'none_replies': none_replies,
+        },
+    )
 
 
 @staff_member_required

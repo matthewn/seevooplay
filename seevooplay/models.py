@@ -86,6 +86,7 @@ class Reply(TimeStampedModel):
     )
 
     class Meta:
+        ordering = ('guest',)
         verbose_name_plural = 'Replies'
 
     def __str__(self):

@@ -1,0 +1,13 @@
+<ul>
+    {% for reply in replies %}
+        <li>
+            {{ reply.guest.name }}
+            {% if reply.comment %}
+                <div class="comment">{{ reply.comment }}</div>
+            {% endif %}
+            {% if reply.has_viewed == True and request.user.is_staff %}
+                <div>last viewed at {{ reply.modified }}</div>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

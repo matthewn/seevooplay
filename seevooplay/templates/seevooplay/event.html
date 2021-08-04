@@ -2,7 +2,7 @@
 {% load i18n static %}
 {% load debugtools_tags %}
 
-{% block title %}FIXME {{ block.super }}{% endblock %}
+{% block title %}{{ event.name }} {{ block.super }}{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'seevooplay/css/event.css' %}">
@@ -21,6 +21,9 @@
         {% else %}
             Greetings, admin {{ request.user.username }}!
         {% endif %}
+    </p>
+    <p>
+        You are invited to the following event. Please let us know if you are coming below!
     </p>
 
     <table class="event-details">
@@ -45,47 +48,59 @@
         <tr><td>Details:</td><td>{{ event.details }}</td></tr>
     </table>
 
-    <div class="reply-form">
-        <form method="post">
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="field-wrapper {{ field.html_name }}">
-                    {{ field.errors }}
-                    {% if field.name != 'extra_guests' %}
-                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {% endif %}
-                    {% if field.name == 'extra_guests' %}I will bring {% endif %}
-                    {{ field }}
-                    {% if field.name == 'extra_guests' %} people with me.{% endif %}
-                    {% if field.help_text %}
-                        <p class="help">{{ field.help_text|safe }}</p>
-                    {% endif %}
-                </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
             {% endfor %}
-            <input type="submit" value="post my reply">
-        </form>
-    </div>
+        </ul>
+    {% endif %}
 
-    <div class="replies">
-        <ul>YES
-            {% for reply in yes_replies %}
-                <li>{{ reply.guest.name }}</li>
-            {% endfor %}
-        </ul>
-        <ul>NO
-            {% for reply in no_replies %}
-                <li>{{ reply.guest.name }}</li>
-            {% endfor %}
-        </ul>
-        <ul>MAYBE
-            {% for reply in maybe_replies %}
-                <li>{{ reply.guest.name }}</li>
-            {% endfor %}
-        </ul>
-        <ul>NO REPLY
-            {% for reply in none_replies %}
-                <li>{{ reply.guest.name }}</li>
-            {% endfor %}
-        </ul>
+    <div class="bottom-container">
+        <div class="reply-form">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="field-wrapper {{ field.html_name }}">
+                        {{ field.errors }}
+                        {% if field.name != 'extra_guests' %}
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {% endif %}
+                        {% if field.name == 'extra_guests' %}I will bring {% endif %}
+                        {{ field }}
+                        {% if field.name == 'extra_guests' %} people with me.{% endif %}
+                        {% if field.help_text %}
+                            <p class="help">{{ field.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <input type="submit" value="post my reply">
+            </form>
+        </div>
+
+        <div class="replies">
+            <div class="replycount">
+                <div class="yes">Yes: {{ yes_replies.count }}</div>
+                <div class="maybe">Maybe: {{ maybe_replies.count }}</div>
+                <div class="no">No: {{ no_replies.count }}</div>
+                <div class="none">No Reply: {{ none_replies.count }}</div>
+            </div>
+            <div class="replyhed">Yes</div>
+            {% with yes_replies as replies %}
+                {% include 'seevooplay/event_replies.html' %}
+            {% endwith %}
+            <div class="replyhed">Maybe</div>
+            {% with maybe_replies as replies %}
+                {% include 'seevooplay/event_replies.html' %}
+            {% endwith %}
+            <div class="replyhed">No</div>
+            {% with no_replies as replies %}
+                {% include 'seevooplay/event_replies.html' %}
+            {% endwith %}
+            <div class="replyhed">No reply</div>
+            {% with none_replies as replies %}
+                {% include 'seevooplay/event_replies.html' %}
+            {% endwith %}
+        </div>
     </div>
 {% endblock %}

@@ -1,5 +1,16 @@
+#content {
+  font-size: 1.2rem;
+  margin: 0 auto;
+  max-width: 65rem;
+}
+
+#content h1 {
+  margin-bottom: 3rem;
+  text-align: center;
+}
 .event-image img {
-  float: right;
+  float: left;
+  margin: 0 3rem 1rem 0;
   max-width: 300px;
 }
 
@@ -13,10 +24,98 @@
   padding-right: 1rem;
 }
 
-.reply-form {
-  margin: 2rem 0;
+ul.messages {
+  clear: both;
+  font-size: 2rem;
+  font-style: italic;
+  list-style: none;
+  margin: 3rem 0;
+  padding: 0;
+  text-align: center;
 }
 
+@media (min-width: 768px) {
+  .bottom-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  .reply-form,
+  .replies {
+    width: 50%;
+  }
+  .reply-form {
+    border-right: 2px dotted silver;
+    padding-right: 2rem;
+  }
+  .replies {
+    padding-left: 2rem;
+  }
+}
+
+.bottom-container {
+  clear: both;
+  margin-top: 4rem;
+}
+
+.reply-form,
 .replies {
-  margin: 2rem 0;
+  text-align: center;
+}
+.replies ul {
+  padding: 0;
+}
+.replies li {
+  font-size: 1rem;
+  list-style: none;
+  margin-top: 0.75rem;
+}
+.replycount div {
+  display: inline;
+  margin-right: 1.5rem;
+}
+.replycount .yes {
+  color: green;
+}
+.replycount .maybe {
+  color: orange;
+}
+.replycount .no {
+  color: red;
+}
+.replycount .none {
+  color: darkgrey;
+}
+.replyhed {
+  margin-top: 2rem;
+}
+.replies li div {
+  font-size: 0.8rem;
+}
+
+.reply-form textarea {
+  font-size: 1rem;
+}
+.reply-form input[type=submit] {
+  font-size: 1.15rem;
+}
+.field-wrapper {
+  margin-bottom: 1.5rem;
+}
+.field-wrapper.status > label,
+.field-wrapper.comment label {
+  font-variant: small-caps;
+}
+.field-wrapper.status ul {
+  padding: 0;
+}
+.field-wrapper.status li {
+  display: inline-block;
+  list-style: none;
+  margin: 0 0.5rem;
+}
+.field-wrapper.extra_guests input {
+  width: 2rem;
+}
+.field-wrapper.comment label {
+  display: block;
 }
