@@ -26,9 +26,8 @@ def event_page(request, event_id, guest_uuid=None):
 
     if guest:
         guest_reply = Reply.objects.get(event=event, guest=guest)
-        if guest_reply.has_viewed is False:
-            guest_reply.has_viewed = True
-            guest_reply.save()
+        guest_reply.has_viewed = True
+        guest_reply.save()
 
     if request.method == 'POST':
         form = ReplyForm(request.POST)
