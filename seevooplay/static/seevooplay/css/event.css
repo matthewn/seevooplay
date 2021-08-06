@@ -8,6 +8,38 @@
   margin-bottom: 3rem;
   text-align: center;
 }
+#content h2 {
+  font-size: 1.75rem;
+  font-weight: normal;
+  letter-spacing: .5rem;
+  padding-left: .5rem;
+}
+#content .reply-form h2 {
+  letter-spacing: 2rem;
+  padding-left: 2rem;
+}
+#content h3 {
+  font-size: 1.5rem;
+  font-weight: normal;
+  margin-top: 2rem;
+  font-variant: small-caps;
+  position: relative;
+}
+#content h3::before,
+#content h3::after {
+  content: "";
+  position: absolute;
+  border-top: 2px dotted silver;
+  top: .75rem;
+  width: calc(50% - 5rem);
+}
+#content h3::before {
+  left: 0;
+}
+#content h3::after {
+  right: 0;
+}
+
 .event-image img {
   float: left;
   margin: 0 3rem 1rem 0;
@@ -18,7 +50,7 @@
   vertical-align: top;
 }
 .event-details td {
-  padding: 0.5rem 0;
+  padding: .5rem 0;
 }
 .event-details td:first-child {
   padding-right: 1rem;
@@ -66,8 +98,9 @@ ul.messages {
 }
 .replies li {
   font-size: 1rem;
+  line-height: 1.5;
   list-style: none;
-  margin-top: 0.75rem;
+  margin-top: .75rem;
 }
 .replycount div {
   display: inline;
@@ -85,11 +118,8 @@ ul.messages {
 .replycount .none {
   color: darkgrey;
 }
-.replyhed {
-  margin-top: 2rem;
-}
 .replies li div {
-  font-size: 0.8rem;
+  font-size: .8rem;
 }
 
 .reply-form textarea {
@@ -111,7 +141,7 @@ ul.messages {
 .field-wrapper.status li {
   display: inline-block;
   list-style: none;
-  margin: 0 0.5rem;
+  margin: 0 .5rem;
 }
 .field-wrapper.extra_guests input {
   width: 2rem;

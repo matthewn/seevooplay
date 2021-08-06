@@ -87,19 +87,19 @@
                 <div class="no">No: {{ no_replies.count }}</div>
                 <div class="none">No Reply: {{ none_replies.count }}</div>
             </div>
-            <div class="replyhed">Yes</div>
+            <h3>Yes</h3>
             {% with yes_replies as replies %}
                 {% include 'seevooplay/event_replies.html' %}
             {% endwith %}
-            <div class="replyhed">Maybe</div>
+            <h3>Maybe</h3>
             {% with maybe_replies as replies %}
                 {% include 'seevooplay/event_replies.html' %}
             {% endwith %}
-            <div class="replyhed">No</div>
+            <h3>No</h3>
             {% with no_replies as replies %}
                 {% include 'seevooplay/event_replies.html' %}
             {% endwith %}
-            <div class="replyhed">No reply</div>
+            <h3>No reply</h3>
             {% with none_replies as replies %}
                 {% include 'seevooplay/event_replies.html' %}
             {% endwith %}
