@@ -35,7 +35,9 @@ class StatusesInline(admin.TabularInline):
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     fields = (
-        ('name', 'host'),
+        'name',
+        ('host1_name', 'host1_email'),
+        ('host2_name', 'host2_email'),
         'start_datetime',
         'end_datetime',
         ('location_name', 'location_address'),

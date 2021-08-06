@@ -28,7 +28,15 @@
 
     <table class="event-details">
         <tr><td>Event:</td><td>{{ event.name }}</td></tr>
-        <tr><td>Host(s):</td><td>{{ event.host }}</td></tr>
+        <tr>
+            <td>
+                {% if event.host2_name %}Hosts:{% else %}Host:{% endif %}
+            </td>
+            <td>
+                {% if event.host1_email %}<a href="mailto:{{ event.host1_email }}">{% endif %}{{ event.host1_name }}{% if event.host1_email %}</a>{% endif %}
+                {% if event.host2_name %}and {% if event.host2_email %}<a href="mailto:{{ event.host2_email }}">{% endif %}{{ event.host2_name }}{% if event.host2_email %}</a>{% endif %}{% endif %}
+            </td>
+        </tr>
         <tr>
             <td>When:</td>
             <td>
