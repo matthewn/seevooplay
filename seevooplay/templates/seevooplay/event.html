@@ -45,7 +45,7 @@
                 {{ event.location_address }}
             </td>
         </tr>
-        <tr><td>Details:</td><td>{{ event.details }}</td></tr>
+        <tr><td>Details:</td><td>{{ event.details|safe }}</td></tr>
     </table>
 
     {% if messages %}

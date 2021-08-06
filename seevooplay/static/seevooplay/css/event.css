@@ -3,41 +3,39 @@
   margin: 0 auto;
   max-width: 65rem;
 }
-
-#content h1 {
+h1 {
   margin-bottom: 3rem;
   text-align: center;
 }
-#content h2 {
+h2 {
   font-size: 1.75rem;
   font-weight: normal;
   letter-spacing: .5rem;
   padding-left: .5rem;
 }
-#content .reply-form h2 {
-  letter-spacing: 2rem;
-  padding-left: 2rem;
-}
-#content h3 {
+h3 {
   font-size: 1.5rem;
   font-weight: normal;
   margin-top: 2rem;
   font-variant: small-caps;
   position: relative;
 }
-#content h3::before,
-#content h3::after {
+h3::before,
+h3::after {
   content: "";
   position: absolute;
   border-top: 2px dotted silver;
   top: .75rem;
   width: calc(50% - 5rem);
 }
-#content h3::before {
+h3::before {
   left: 0;
 }
-#content h3::after {
+h3::after {
   right: 0;
+}
+p {
+  margin: 0 0 1.5rem;
 }
 
 .event-image img {
@@ -122,6 +120,10 @@ ul.messages {
   font-size: .8rem;
 }
 
+.reply-form h2 {
+  letter-spacing: 2rem;
+  padding-left: 2rem;
+}
 .reply-form textarea {
   font-size: 1rem;
 }
