@@ -15,21 +15,6 @@ from .utils import send_emails
 
 def event_page(request, event_id, guest_uuid=None):
     event = Event.objects.get(id=event_id)
-    replies = Reply.objects.filter(event=event)
-
-    yes_replies = replies.filter(status='Y')
-    maybe_replies = replies.filter(status='M')
-    no_replies = replies.filter(status='N')
-    none_replies = replies.filter(status='')
-
-    yes_replies_count = (
-        yes_replies.count()
-        + yes_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']
-    )
-    maybe_replies_count = (
-        maybe_replies.count()
-        + maybe_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']
-    )
 
     if guest_uuid is None:
         if not request.user.is_staff:
@@ -40,7 +25,7 @@ def event_page(request, event_id, guest_uuid=None):
         guest = Guest.objects.get(id=guest_uuid)
 
     if guest:
-        guest_reply = replies.get(guest=guest)
+        guest_reply = Reply.objects.get(event=event, guest=guest)
         if guest_reply.has_viewed is False:
             guest_reply.has_viewed = True
             guest_reply.save()
@@ -71,6 +56,22 @@ def event_page(request, event_id, guest_uuid=None):
             )
         else:
             form = ReplyForm()
+
+    replies = Reply.objects.filter(event=event)
+
+    yes_replies = replies.filter(status='Y')
+    maybe_replies = replies.filter(status='M')
+    no_replies = replies.filter(status='N')
+    none_replies = replies.filter(status='')
+
+    yes_replies_count = (
+        yes_replies.count()
+        + yes_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']
+    )
+    maybe_replies_count = (
+        maybe_replies.count()
+        + maybe_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']
+    )
 
     return TemplateResponse(
         request,
