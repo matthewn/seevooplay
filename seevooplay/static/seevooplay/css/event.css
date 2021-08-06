@@ -28,15 +28,15 @@ h3::after {
   top: .75rem;
   width: calc(50% - 5rem);
 }
-h3::before {
-  left: 0;
-}
-h3::after {
-  right: 0;
-}
-p {
-  margin: 0 0 1.5rem;
-}
+h3.yes::before,
+h3.yes::after { width: calc(50% - 3rem); }
+h3.maybe::before,
+h3.maybe::after { width: calc(50% - 4rem); }
+h3.no::before,
+h3.no::after { width: calc(50% - 2rem); }
+h3::before { left: 0; }
+h3::after { right: 0; }
+p { margin: 0 0 1.5rem; }
 
 .event-image img {
   float: left;
@@ -150,4 +150,13 @@ ul.messages {
 }
 .field-wrapper.comment label {
   display: block;
+}
+
+ul.errorlist {
+  color: red;
+  font-size: 1rem;
+  font-variant: small-caps;
+  list-style: none;
+  margin-bottom: .25rem;
+  padding: 0;
 }
