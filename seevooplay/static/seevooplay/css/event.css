@@ -38,9 +38,11 @@ h3::before { left: 0; }
 h3::after { right: 0; }
 p { margin: 0 0 1.5rem; }
 
+.event-image {
+  text-align: center;
+}
 .event-image img {
-  float: left;
-  margin: 0 3rem 1rem 0;
+  margin-bottom: 2rem;
   max-width: 300px;
 }
 
@@ -65,6 +67,10 @@ ul.messages {
 }
 
 @media (min-width: 768px) {
+  .event-image img {
+    float: left;
+    margin: 0 3rem 1rem 0;
+  }
   .bottom-container {
     display: flex;
     justify-content: space-between;
@@ -91,6 +97,9 @@ ul.messages {
 .replies {
   text-align: center;
 }
+.reply-form {
+  margin-bottom: 3rem;
+}
 .replies ul {
   padding: 0;
 }
@@ -102,7 +111,9 @@ ul.messages {
 }
 .replycount div {
   display: inline;
+  line-height: 1.5;
   margin-right: 1.5rem;
+  white-space: nowrap;
 }
 .replycount .yes {
   color: green;
