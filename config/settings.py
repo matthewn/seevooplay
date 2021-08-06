@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'seevooplay',  # must come before django.contrib.admin or equiv.
     'config.apps.CustomAdminConfig',  # replaces django.contrib.admin
 
+    'djrichtextfield',  # REQUIRED! rich text field for event admin
     'django_extensions',
 ]
 
@@ -140,5 +141,36 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+# django-richtextfield
+
+DJRICHTEXTFIELD_CONFIG = {
+    'js': [
+        '//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js',
+        '//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/plugins/cleanpaste/trumbowyg.cleanpaste.min.js',
+        '//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/plugins/history/trumbowyg.history.min.js',
+    ],
+    'css': {
+        'all': [
+            '//cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css',
+        ]
+    },
+    'init_template': 'seevooplay/trumbowyg.js',
+    'settings': {
+        'autogrow': True,
+        'semantic': False,
+        'minimalLinks': True,
+        'btns': [
+            ['historyUndo', 'historyRedo'],
+            ['strong', 'em'],
+            ['link'],
+            ['removeformat'],
+            ['viewHTML'],
+            ['fullscreen']
+        ]
+    }
+}
+
+
+# TODO REMOVE ME
 # reroute site-generated emails to console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

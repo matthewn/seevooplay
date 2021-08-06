@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 from django.utils.html import mark_safe
+
+from djrichtextfield.models import RichTextField
 from model_utils.models import TimeStampedModel, UUIDModel
 
 import pytz
@@ -29,7 +31,7 @@ class Event(TimeStampedModel):
         blank=True,
         max_length=128,
     )
-    details = models.TextField(blank=True)
+    details = RichTextField(blank=True)
     image = models.ImageField(
         blank=True,
         upload_to='event_images/',

@@ -5,3 +5,8 @@ tr.dynamic-reply_set > td:first-child > p {
 .inline-group .tabular tr.has_original td {
   padding-top: 1em;
 }
+
+.form-row .fieldBox {
+  max-width: 600px;
+  width: 600px;
+}

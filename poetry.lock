@@ -57,6 +57,14 @@ python-versions = "*"
 Django = ">=2.0.1"
 
 [[package]]
+name = "django-richtextfield"
+version = "1.6.1"
+description = "A Django model field and widget that renders a customizable WYSIWYG/rich text editor"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "pillow"
 version = "8.3.1"
 description = "Python Imaging Library (Fork)"
@@ -94,7 +102,7 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "d6bbbd701dd57f219e9307b56dd62102349c09bf56813b5b6ee9648c3c4c86c6"
+content-hash = "9229f704ec484d7ba9e1d21da043a06bf572378ce1e37f500d21e9ed914941b4"
 
 [metadata.files]
 asgiref = [
@@ -116,6 +124,9 @@ django-extensions = [
 django-model-utils = [
     {file = "django-model-utils-4.1.1.tar.gz", hash = "sha256:eb5dd05ef7d7ce6bc79cae54ea7c4a221f6f81e2aad7722933aee66489e7264b"},
     {file = "django_model_utils-4.1.1-py3-none-any.whl", hash = "sha256:ef7c440024e797796a3811432abdd2be8b5225ae64ef346f8bfc6de7d8e5d73c"},
+]
+django-richtextfield = [
+    {file = "django-richtextfield-1.6.1.tar.gz", hash = "sha256:c4b8f9d19214727f8cc3056658413dc7652627ce9d0d1f25395483a9bf641d65"},
 ]
 pillow = [
     {file = "Pillow-8.3.1-1-cp36-cp36m-win_amd64.whl", hash = "sha256:fd7eef578f5b2200d066db1b50c4aa66410786201669fb76d5238b007918fb24"},
