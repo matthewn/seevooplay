@@ -2,8 +2,10 @@
     {% for reply in replies %}
         <li>
             {{ reply.guest.name }}
-            {% if reply.extra_guests %}
-                + {{ reply.extra_guests }}
+            {% if reply.status == 'Y' or reply.status == 'M' %}
+                {% if reply.extra_guests %}
+                    + {{ reply.extra_guests }}
+                {% endif %}
             {% endif %}
             {% if reply.comment %}
                 <div class="comment">{{ reply.comment }}</div>

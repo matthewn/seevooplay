@@ -23,7 +23,7 @@
         {% endif %}
     </p>
     <p>
-        You are invited to the following event. Please let us know if you are coming below!
+        You are invited to the following event. Please <a href="#rsvp">RSVP</a> below!
     </p>
 
     <table class="event-details">
@@ -57,7 +57,7 @@
     {% endif %}
 
     <div class="bottom-container">
-        <div class="reply-form">
+        <div id="rsvp" class="reply-form">
             <h2>RSVP</h2>
             <form method="post">
                 {% csrf_token %}
