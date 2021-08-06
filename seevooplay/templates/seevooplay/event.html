@@ -58,6 +58,7 @@
 
     <div class="bottom-container">
         <div class="reply-form">
+            <h2>RSVP</h2>
             <form method="post">
                 {% csrf_token %}
                 {% for field in form %}
@@ -79,9 +80,10 @@
         </div>
 
         <div class="replies">
+            <h2>Replies</h2>
             <div class="replycount">
-                <div class="yes">Yes: {{ yes_replies.count }}</div>
-                <div class="maybe">Maybe: {{ maybe_replies.count }}</div>
+                <div class="yes">Yes: {{ yes_replies_count }}</div>
+                <div class="maybe">Maybe: {{ maybe_replies_count }}</div>
                 <div class="no">No: {{ no_replies.count }}</div>
                 <div class="none">No Reply: {{ none_replies.count }}</div>
             </div>

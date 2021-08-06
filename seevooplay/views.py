@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
+from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template.response import TemplateResponse
@@ -17,9 +18,18 @@ def event_page(request, event_id, guest_uuid=None):
     replies = Reply.objects.filter(event=event)
 
     yes_replies = replies.filter(status='Y')
-    no_replies = replies.filter(status='N')
     maybe_replies = replies.filter(status='M')
+    no_replies = replies.filter(status='N')
     none_replies = replies.filter(status='')
+
+    yes_replies_count = (
+        yes_replies.count()
+        + yes_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']
+    )
+    maybe_replies_count = (
+        maybe_replies.count()
+        + maybe_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']
+    )
 
     if guest_uuid is None:
         if not request.user.is_staff:
@@ -70,9 +80,11 @@ def event_page(request, event_id, guest_uuid=None):
             'form': form,
             'guest': guest,
             'yes_replies': yes_replies,
-            'no_replies': no_replies,
             'maybe_replies': maybe_replies,
+            'no_replies': no_replies,
             'none_replies': none_replies,
+            'yes_replies_count': yes_replies_count,
+            'maybe_replies_count': maybe_replies_count,
         },
     )
 
