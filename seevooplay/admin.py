@@ -17,7 +17,7 @@ class StatusesInline(admin.TabularInline):
     """
     model = Reply
     extra = 0
-    verbose_name_plural = 'Invitees & Responses'
+    verbose_name_plural = 'Invitations & Responses'
 
     class Media:
         css = {'all': ('seevooplay/css/admin.css',)}

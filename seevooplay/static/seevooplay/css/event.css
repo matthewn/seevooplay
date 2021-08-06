@@ -126,6 +126,7 @@ ul.messages {
 }
 .reply-form textarea {
   font-size: 1rem;
+  margin-top: .5rem;
 }
 .reply-form input[type=submit] {
   font-size: 1.15rem;
