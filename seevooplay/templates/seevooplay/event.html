@@ -50,7 +50,7 @@
             <td>Where:</td>
             <td>
                 {{ event.location_name }}<br>
-                {{ event.location_address }}
+                <a target="_blank" href="https://duckduckgo.com/?q={{ event.location_address|urlencode }}&iaxm=maps">{{ event.location_address }}</a>
             </td>
         </tr>
         <tr><td>Details:</td><td>{{ event.details|safe }}</td></tr>
