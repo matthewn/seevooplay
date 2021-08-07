@@ -1,0 +1,22 @@
+Greetings, {{ guest.name }}!
+
+This message regards the following event, which you've been invited to:
+
+{{ event.name }}
+{{ event.start_datetime }}
+
+
+Here's an update from {{ event.host1_name }}{% if event.host2_name %} and {{ event.host2_name }}{% endif %}:
+
+{{ message }}
+
+
+To view your invitation or update your RSVP, visit this page:
+
+{{ protocol }}://{{ host }}{% url 'invitation' event_id=event.id %}{{ guest.id }}/
+
+
+--
+Sent by the invitation bot at {{ host }}.
+
+

@@ -10,6 +10,7 @@ from django.urls import reverse
 
 from .forms import EmailGuestsForm, ReplyForm
 from .models import Event, Guest, Reply
+from .utils import send_guest_emails
 
 
 def event_page(request, event_id, guest_uuid=None):
@@ -143,19 +144,8 @@ def email_guests(request, event_id):
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
 
-            # TODO HOOK UP A NEW FUNCTION HERE
-            # send_emails(request, subject, message, None, recipients)
+            send_guest_emails(request, event, subject, message, None, recipients)
 
-            messages.add_message(
-                request,
-                messages.INFO,
-                f'event id: {event}, subject: {subject}, message: {message}',
-            )
-            messages.add_message(
-                request,
-                messages.INFO,
-                f'people to email: {recipients}',
-            )
             return HttpResponseRedirect(
                 reverse('admin:seevooplay_event_change', args=(event_id,))
             )
@@ -164,7 +154,7 @@ def email_guests(request, event_id):
     else:
         form = EmailGuestsForm()
 
-    return render(
+    return TemplateResponse(
         request,
         'seevooplay/email_guests.html',
         {

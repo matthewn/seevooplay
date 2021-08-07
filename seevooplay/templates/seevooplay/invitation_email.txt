@@ -5,9 +5,9 @@ Greetings, {{ guest.name }}!
 {{ event.name }}
 {{ event.start_datetime }}
 
-To see the full invitation, and to RSVP, please visit the following page:
+To see the full invitation, and to RSVP, please visit this page:
 
-{{ protocol }}://{{ host }}{% url 'invitation' event_id=event.id %}{{ guest_id }}/
+{{ protocol }}://{{ host }}{% url 'invitation' event_id=event.id %}{{ guest.id }}/
 
 
 --
