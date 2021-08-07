@@ -7,7 +7,7 @@ from .models import (
     Guest,
     Reply,
 )
-from .utils import send_emails
+from .utils import send_invitations
 
 
 class StatusesInline(admin.TabularInline):
@@ -52,7 +52,7 @@ class EventAdmin(admin.ModelAdmin):
         Do some things with the raw data in the 'invitees' field.
 
         (1) Convert the raw guestlist from 'invitees' into Guest objects.
-        (2) Email the invite to newly-added guests.
+        (2) Trigger email invitations for newly-added guests.
         """
         invitees = (
             obj.invitees.replace('"', '').replace('<', '').replace('>', '')
@@ -63,6 +63,8 @@ class EventAdmin(admin.ModelAdmin):
         for line in lines:
             words = line.split(' ')
             email = words[-1]
+            if not email:
+                continue
             try:
                 validate_email(email)
                 name = ' '.join(words[:-1])
@@ -91,13 +93,7 @@ class EventAdmin(admin.ModelAdmin):
                 messages.INFO,
                 f'New invitees added for {obj.name}: {new_guests_dsp}',
             )
-            send_emails(
-                request,
-                f'event invitation: {obj.name}',
-                'this is the body of the event invitation',  # TODO
-                None,  # use DEFAULT_FROM_EMAIL
-                new_guests,
-            )
+            send_invitations(request, obj, None, new_guests)
 
 
 @admin.register(Guest)

@@ -1,0 +1,15 @@
+Greetings, {{ guest.name }}!
+
+{% if event.host2_name %}{{ event.host1_name }} and {{ event.host2_name }} have{% else %}{{ event.host1_name }} has{% endif %} invited you to:
+
+{{ event.name }}
+{{ event.start_datetime }}
+
+To see the full invitation, and to RSVP, please visit the following page:
+
+{{ protocol }}://{{ host }}{% url 'invitation' event_id=event.id %}{{ guest_id }}/
+
+
+--
+Sent by the invitation bot at {{ host }}.
+
