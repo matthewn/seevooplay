@@ -10,7 +10,6 @@ from django.urls import reverse
 
 from .forms import EmailGuestsForm, ReplyForm
 from .models import Event, Guest, Reply
-from .utils import send_emails
 
 
 def event_page(request, event_id, guest_uuid=None):
@@ -63,14 +62,17 @@ def event_page(request, event_id, guest_uuid=None):
     no_replies = replies.filter(status='N')
     none_replies = replies.filter(status='')
 
-    yes_replies_count = (
-        yes_replies.count()
-        + yes_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']
-    )
-    maybe_replies_count = (
-        maybe_replies.count()
-        + maybe_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']
-    )
+    yes_replies_count = yes_replies.count()
+    if yes_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']:
+        yes_replies_count += yes_replies.aggregate(
+            Sum('extra_guests')
+        )['extra_guests__sum']
+
+    maybe_replies_count = maybe_replies.count()
+    if maybe_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']:
+        maybe_replies_count += maybe_replies.aggregate(
+            Sum('extra_guests')
+        )['extra_guests__sum']
 
     return TemplateResponse(
         request,
@@ -141,7 +143,8 @@ def email_guests(request, event_id):
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
 
-            send_emails(request, subject, message, None, recipients)
+            # TODO HOOK UP A NEW FUNCTION HERE
+            # send_emails(request, subject, message, None, recipients)
 
             messages.add_message(
                 request,
