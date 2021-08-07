@@ -7,6 +7,9 @@ tr.dynamic-reply_set > td:first-child > p {
 }
 
 .form-row .fieldBox {
-  max-width: 600px;
   width: 600px;
+}
+.trumbowyg-box {
+  min-height: unset;
+  max-height: 200px;
 }
