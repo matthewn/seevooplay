@@ -12,7 +12,6 @@ class ReplyForm(forms.Form):
         widget=forms.RadioSelect,
     )
     extra_guests = forms.IntegerField(
-        initial=0,
         widget=forms.TextInput,
     )
     comment = forms.CharField(

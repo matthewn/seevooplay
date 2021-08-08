@@ -84,7 +84,7 @@ class Reply(TimeStampedModel):
         max_length=1,
         choices=ReplyStatus.choices,
     )
-    extra_guests = models.PositiveSmallIntegerField(blank=True, null=True)
+    extra_guests = models.PositiveSmallIntegerField(default=0)
     comment = models.CharField(
         blank=True,
         max_length=512,
