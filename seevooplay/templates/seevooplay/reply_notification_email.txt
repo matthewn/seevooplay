@@ -1,0 +1,24 @@
+Greetings, event host!
+
+This message regards this event:
+
+{{ reply.event.name }}
+{{ reply.event.start_datetime }}
+
+{{ reply.guest.name }} has replied: {{ status }}
+
+{% if reply.extra_guests %}They are bringing {{ reply.extra_guests }} people with them.{% endif %}
+
+{% if reply.comment %}They also said:
+
+{{ reply.comment }}{% endif %}
+
+You can administer your event here:
+
+{{ protocol }}://{{ host }}{{ link }}
+
+
+--
+Sent by the invitation bot at {{ host }}.
+
+

@@ -9,7 +9,7 @@ from django.urls import reverse
 
 from .forms import EmailGuestsForm, ReplyForm
 from .models import Event, Guest, Reply
-from .utils import send_guest_emails
+from .utils import send_guest_emails, send_reply_notifications
 
 
 def event_page(request, event_id, guest_uuid=None):
@@ -35,6 +35,12 @@ def event_page(request, event_id, guest_uuid=None):
             guest_reply.extra_guests = form.cleaned_data['extra_guests']
             guest_reply.comment = form.cleaned_data['comment']
             guest_reply.save()
+
+            # send reply_notification_email
+            address_list = [event.host1_email]
+            if event.host2_email:
+                address_list.append(event.host2_email)
+            send_reply_notifications(request, guest_reply, None, address_list)
 
             messages.add_message(request, messages.INFO, 'Thank you for your reply!')
             if guest_reply.status == 'Y':
