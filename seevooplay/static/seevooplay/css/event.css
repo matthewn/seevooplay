@@ -130,6 +130,9 @@ ul.messages {
 .replies li div {
   font-size: .8rem;
 }
+.replies li .spy {
+  font-style: italic;
+}
 
 .reply-form h2 {
   letter-spacing: 2rem;

@@ -11,7 +11,7 @@
                 <div class="comment">{{ reply.comment }}</div>
             {% endif %}
             {% if reply.has_viewed == True and request.user.is_staff %}
-                <div>last viewed at {{ reply.modified }}</div>
+                <div class="spy">last viewed at {{ reply.modified }}</div>
             {% endif %}
         </li>
     {% endfor %}
