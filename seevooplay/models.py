@@ -23,9 +23,9 @@ class Guest(TimeStampedModel, UUIDModel):
 
 class Event(TimeStampedModel):
     name = models.CharField(max_length=64)
-    host1_name = models.CharField(max_length=64)
-    host1_email = models.EmailField(blank=True)
-    host2_name = models.CharField(blank=True, max_length=64)
+    host1_name = models.CharField(max_length=128)
+    host1_email = models.EmailField()
+    host2_name = models.CharField(blank=True, max_length=128)
     host2_email = models.EmailField(blank=True)
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField(blank=True, null=True)
