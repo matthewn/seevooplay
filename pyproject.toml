@@ -1,8 +1,18 @@
 [tool.poetry]
 name = "seevooplay"
-version = "0.1.0"
-description = ""
+version = "0.9.0"
+description = "Seevooplay is a Django app for online invitations and RSVPs."
 authors = ["Matthew Newton <matthewn@mahnamahna.net>"]
+readme = "README.md"
+keywords = ["django"]
+license = "GPL-3.0-only"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
