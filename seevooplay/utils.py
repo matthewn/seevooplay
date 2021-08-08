@@ -58,7 +58,7 @@ def send_reply_notifications(request, reply, from_email, address_list):
             'status': ReplyStatus(reply.status).label,
             'host': request.get_host(),
             'protocol': request.META['wsgi.url_scheme'],
-            'link': reverse('admin:seevooplay_event_change', args=(reply.event.id,))
+            'link': reverse('admin:seevooplay_event_change', args=(reply.event.id,)),
         }
         body = template.render(context)
         send_mail(subject, body, from_email, (address,))
