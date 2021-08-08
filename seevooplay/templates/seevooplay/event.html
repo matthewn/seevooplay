@@ -95,22 +95,30 @@
                 <div class="no">No: {{ no_replies.count }}</div>
                 <div class="none">No Reply: {{ none_replies.count }}</div>
             </div>
-            <h3 class="yes">Yes</h3>
-            {% with yes_replies as replies %}
-                {% include 'seevooplay/event_replies.html' %}
-            {% endwith %}
-            <h3 class="maybe">Maybe</h3>
-            {% with maybe_replies as replies %}
-                {% include 'seevooplay/event_replies.html' %}
-            {% endwith %}
-            <h3 class="no">No</h3>
-            {% with no_replies as replies %}
-                {% include 'seevooplay/event_replies.html' %}
-            {% endwith %}
-            <h3>No reply</h3>
-            {% with none_replies as replies %}
-                {% include 'seevooplay/event_replies.html' %}
-            {% endwith %}
+            {% if yes_replies_count > 0 %}
+                <h3 class="yes">Yes</h3>
+                {% with yes_replies as replies %}
+                    {% include 'seevooplay/event_replies.html' %}
+                {% endwith %}
+            {% endif %}
+            {% if maybe_replies_count > 0 %}
+                <h3 class="maybe">Maybe</h3>
+                {% with maybe_replies as replies %}
+                    {% include 'seevooplay/event_replies.html' %}
+                {% endwith %}
+            {% endif %}
+            {% if no_replies.count > 0 %}
+                <h3 class="no">No</h3>
+                {% with no_replies as replies %}
+                    {% include 'seevooplay/event_replies.html' %}
+                {% endwith %}
+            {% endif %}
+            {% if none_replies.count > 0 %}
+                <h3>No reply</h3>
+                {% with none_replies as replies %}
+                    {% include 'seevooplay/event_replies.html' %}
+                {% endwith %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}
