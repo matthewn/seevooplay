@@ -13,12 +13,17 @@
 {% if not is_popup %}
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-    <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+<a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label='seevooplay' %}">Seevooplay</a>
+&rsaquo; <a href="{% url 'admin:seevooplay_event_changelist' %}">Events</a>
+&rsaquo; <a href="{% url 'admin:seevooplay_event_change' event.id %}">{{ event.name }}
+({{ event.start_datetime|date:"SHORT_DATE_FORMAT" }}
+{{ event.start_datetime|date:"h:i A e" }})</a>
+&rsaquo; Email guests
+</a>
 </div>
 {% endblock %}
 {% endif %}
-
-{% block coltype %}{% endblock %}
 
 {% block content %}
 <div id="content-main">
