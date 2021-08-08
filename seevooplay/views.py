@@ -3,7 +3,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.template.response import TemplateResponse
 from django.urls import reverse
 
