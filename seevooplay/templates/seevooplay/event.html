@@ -11,6 +11,14 @@
 {% block content %}
     <h1>{{ event.name }}</h1>
 
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <div class="event-image">
         <img alt="" src="{{ event.image.url }}">
     </div>
@@ -55,14 +63,6 @@
         </tr>
         <tr><td>Details:</td><td>{{ event.details|safe }}</td></tr>
     </table>
-
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
 
     <div class="bottom-container">
         <div id="rsvp" class="reply-form">
