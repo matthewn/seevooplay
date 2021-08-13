@@ -15,6 +15,8 @@ To view your invitation or update your RSVP, visit this page:
 
 {{ protocol }}://{{ host }}{% url 'invitation' event_id=event.id %}{{ guest.id }}/
 
+(This link is personalized to you -- do not share!)
+
 
 --
 Sent by the invitation bot at {{ host }}.
