@@ -56,10 +56,15 @@ broad strokes, the steps are:
 7. Fire up the Django development server with `./manage.py runserver` or put your favorite server (gunicorn, nginx, apache) in front of the project.
 8. In your browser, navigate to /admin and log in with your superuser credentials to poke around and create your first event in Seevooplay.
 
-## Integrate with existing Django project
+## Integrate with existing Django project TODO FIXME
 
 1. Add Seevooplay to your project with `pip install seevooplay` or `poetry add seevooplay` or whatever your Python package-manager-of-choice requires.
 2. Add 'seevooplay' to INSTALLED_APPS in your settings.py.
 3. Add settings for django-richtextfield in your settings.py. See FIXME TODO docs for details, or see example configuration in Seevooplay's config/settings.py.
 4. Add the following lines to your urls.py: TODO FIXME
+5. migrate and collectstatic TODO FIXME
 
+# What Seevooplay Lacks
+
+- Internationalization. I welcome pull requests to change this.
+- HTML emails. Plain text emails don't bother me, so this is unlikely to change.
