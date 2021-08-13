@@ -175,3 +175,7 @@ ul.errorlist {
   margin-bottom: .25rem;
   padding: 0;
 }
+
+.admin-link {
+  font-variant: small-caps;
+}

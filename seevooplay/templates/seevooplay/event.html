@@ -28,6 +28,7 @@
             Greetings, {{ guest.name }}!
         {% else %}
             Greetings, admin {{ request.user.username }}!
+            <a class="admin-link" href="{% url 'admin:seevooplay_event_change' event.id %}">Edit this event</a>
         {% endif %}
     </p>
     <p>
