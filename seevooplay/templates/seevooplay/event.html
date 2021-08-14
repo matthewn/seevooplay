@@ -47,12 +47,7 @@
         </tr>
         <tr>
             <td>When:</td>
-            <td>
-                {{ event.start_datetime }}
-                {% if event.end_datetime %}
-                    &ndash; {{ event.end_datetime }}
-                {% endif %}
-            </td>
+            <td>{{ date_display }}</td>
         </tr>
         <tr>
             <td>Where:</td>

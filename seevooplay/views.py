@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
@@ -5,15 +6,28 @@ from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
+from django.utils.formats import date_format, time_format
 
+import pytz
 
 from .forms import EmailGuestsForm, ReplyForm
 from .models import Event, Guest, Reply
 from .utils import send_guest_emails, send_reply_notifications
 
+TZ = pytz.timezone(settings.TIME_ZONE)
+
 
 def event_page(request, event_id, guest_uuid=None):
     event = Event.objects.get(id=event_id)
+
+    start_datetime = event.start_datetime.astimezone(tz=TZ)
+    end_datetime = event.end_datetime.astimezone(tz=TZ)
+    if start_datetime.date() == end_datetime.date():
+        date_display = f"{date_format(start_datetime.date())} {time_format(start_datetime.time())} – {time_format(end_datetime.time())}"
+    elif end_datetime:
+        date_display = f'{date_format(start_datetime)} {time_format(start_datetime)} – {date_format(end_datetime)} {time_format(end_datetime)}'
+    else:
+        date_display = date_format(start_datetime)
 
     if guest_uuid is None:
         if not request.user.is_staff:
@@ -93,6 +107,7 @@ def event_page(request, event_id, guest_uuid=None):
             'none_replies': none_replies,
             'yes_replies_count': yes_replies_count,
             'maybe_replies_count': maybe_replies_count,
+            'date_display': date_display,
         },
     )
 
