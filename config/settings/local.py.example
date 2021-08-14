@@ -13,6 +13,9 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+# set your time zone here
+TIME_ZONE = 'America/Los_Angeles'
+
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
