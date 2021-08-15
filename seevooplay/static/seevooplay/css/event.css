@@ -38,6 +38,9 @@ h3::before { left: 0; }
 h3::after { right: 0; }
 p { margin: 0 0 1.5rem; }
 
+.greeting {
+  font-size: 1.5rem;
+}
 .event-image {
   text-align: center;
 }
