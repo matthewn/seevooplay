@@ -13,3 +13,12 @@ tr.dynamic-reply_set > td:first-child > p {
   min-height: unset;
   max-height: 200px;
 }
+
+.form-row .datetime input.vDateField {
+  margin-left: 7px;
+}
+.datetime .vDateField,
+.datetime .vTimeField {
+  min-width: 5rem;
+  width: 5rem;
+}
