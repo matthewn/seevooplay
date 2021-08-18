@@ -26,8 +26,8 @@ There is not (yet) a containerized distribution of Seevooplay, but if you are fa
 ./manage.py migrate
 ./manage.py collectstatic
 ```
-5. Use `./manage.py sendtestemail` to ensure your setup can send mail.
-6. `./manage.py createsuperuser` to create a superuser.
+5. Do `./manage.py sendtestemail` to ensure your setup can send mail.
+6. Do `./manage.py createsuperuser` to create a superuser.
 7. Fire up the Django development server with `./manage.py runserver` or put your favorite server (gunicorn, nginx, apache) in front of the project.
 8. In your browser, navigate to http://yourdomain/admin and log in with your superuser credentials to poke around and create your first event in Seevooplay. As long as you remain logged in, you can view your first event at http://yourdomain/rsvp/1.
 
