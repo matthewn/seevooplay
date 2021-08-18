@@ -7,11 +7,11 @@ tr.dynamic-reply_set > td:first-child > p {
 }
 
 .form-row .fieldBox {
-  width: 600px;
+  width: 620px;
 }
-.trumbowyg-box {
+.trumbowyg-box,
+.trumbowyg-editor {
   min-height: unset;
-  max-height: 200px;
 }
 
 .form-row .datetime input.vDateField {
