@@ -40,6 +40,8 @@ def event_page(request, event_id, guest_uuid=None):
     if guest:
         guest_reply = Reply.objects.get(event=event, guest=guest)
         guest_reply.has_viewed = True
+        # we save() no matter what so we can use the 'modified' field
+        # to tell us when they last viewed the page
         guest_reply.save()
 
     if request.method == 'POST':
