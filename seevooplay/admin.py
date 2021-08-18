@@ -103,9 +103,9 @@ class GuestAdmin(admin.ModelAdmin):
     readonly_fields = ('email',)
 
 
-@admin.register(Reply)
-class ReplyAdmin(admin.ModelAdmin):
-    """
-    For testing purposes only!
-    """
-    list_display = ('__str__', 'created', 'modified')
+# @admin.register(Reply)
+# class ReplyAdmin(admin.ModelAdmin):
+#     """
+#     For testing purposes only!
+#     """
+#     list_display = ('__str__', 'created', 'modified')
