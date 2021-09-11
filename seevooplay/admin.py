@@ -80,7 +80,7 @@ class EventAdmin(admin.ModelAdmin):
                 )
         new_guests = []
         for guest in all_guests:
-            if guest not in obj.guests.all():
+            if obj._state.adding or guest not in obj.guests.all():
                 new_guests.append(guest)
 
         super().save_model(request, obj, form, change)
