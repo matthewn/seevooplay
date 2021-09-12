@@ -18,6 +18,9 @@ TZ = pytz.timezone(settings.TIME_ZONE)
 
 
 def event_page(request, event_id, guest_uuid=None):
+    """
+    Function-based view that drives the page our guests interact with.
+    """
     event = Event.objects.get(id=event_id)
 
     start_datetime = event.start_datetime.astimezone(tz=TZ)
@@ -116,6 +119,9 @@ def event_page(request, event_id, guest_uuid=None):
 
 @staff_member_required
 def email_guests(request, event_id):
+    """
+    Function-based view that drives an admin page for emailing our guests.
+    """
     event = Event.objects.get(id=event_id)
 
     if request.method == 'POST':

@@ -2,7 +2,7 @@
 
 Seevooplay is a Django app for online invitations and RSVPs. Think of it as your personal, selfhosted version of Evite (or a similar service). Throwing a party? Don't give all your friends' email addresses to Evite. Don't expect your friends to be on Facebook. Embrace the indieweb, kick the corporate middleman to the curb, and let Seevooplay send email invitations and collect responses for you! That's the pitch, anyway.
 
-Seevooplay was crafted for *personal* use; it is not architected for scale. It is directly inspired by [DaVite](http://marginalhacks.com/Hacks/DaVite/), a 2000-line Perl script (last updated in 2004) that was a very cool and useful hack for its time, but is inappropriate for use on the web in 2021 (even if you like Perl, which I don't). Seevooplay aims to solve the same problems DaVite did, in much the same way, but with modern, maintainable, extensible code, atop the rock-solid foundation of Python and Django.
+Seevooplay was crafted for *personal* use; it is not architected for scale. It is directly inspired by [DaVite](http://marginalhacks.com/Hacks/DaVite/), a 2000-line Perl script last updated in 2004 -- a very cool and useful hack for its time, but inappropriate for use on the web in 2021. Seevooplay aims to solve the same problems DaVite did, in much the same way, but with modern, maintainable, extensible code, atop the rock-solid foundation of Python and Django.
 
 The owner of a Seevooplay instance interacts with Seevooplay mainly through Django's admin. [[Screenshot 1](https://user-images.githubusercontent.com/782716/129496242-c791d261-0d5f-43a7-b65d-b8759685b9af.png), [Screenshot 2](https://user-images.githubusercontent.com/782716/129496271-2591b149-db9f-41bd-96ab-9cad18e91c08.png)] Invitees interact with a single public view, whose template and styling is deliberately minimalistic and intended to be customized. [[Screenshot 3](https://user-images.githubusercontent.com/782716/129496302-b2ebeff9-c73b-49cc-b971-706db8589f05.png)] Through the magic of the CSS cascade and Django [template overriding](https://docs.djangoproject.com/en/3.2/howto/overriding-templates/), you can make what your guests see as gorgeous (or as ugly) as you like.
 
@@ -49,7 +49,7 @@ from seevooplay.seevooplay.views import email_guests, event_page
 path('admin/email_guests/<int:event_id>/', email_guests, name='email_guests'),
 path('rsvp/<int:event_id>/', event_page, name='invitation'),
 path('rsvp/<int:event_id>/<guest_uuid>/', event_page),
-path('djrichtextfield/', include('djrichtextfield.urls'))
+path('djrichtextfield/', include('djrichtextfield.urls')),
 ```
 5. From within your project's virtual environment:
 ```
@@ -63,5 +63,5 @@ path('djrichtextfield/', include('djrichtextfield.urls'))
 - 'Add to calendar' functionality. This is probably something I'll hack on at some point.
 - Internationalization. I welcome pull requests to change this.
 - HTML emails. Plain text emails don't bother me, so this is unlikely to change unless someone else does the work.
-- Comprehensive documentation. If anyone other than me ends up using this, the docs will get better. In the meantime, if you try using Seevooplay and run into trouble, please open an issue on GitHub.
-- Perfection. This software was crafted to scratch a personal itch. It almost certainly has bugs. If you discover one, or you have a suggestion for improving the code, I hope to hear from you!
+- Comprehensive documentation. If anyone other than me ends up using this, the docs will get better. In the meantime, if you try using Seevooplay and run into trouble, please open an issue on GitHub. I will help if I can.
+- Perfection. This software was crafted to scratch a personal itch. It almost certainly has bugs. If you discover one, or you have a suggestion for improving the code, please open an issue on GitHub.
