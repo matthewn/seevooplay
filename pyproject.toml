@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "seevooplay"
-version = "0.9.0"
+version = "1.0.0"
 description = "Seevooplay is a Django app for online invitations and RSVPs."
 authors = ["Matthew Newton <matthewn@mahnamahna.net>"]
 readme = "README.md"
