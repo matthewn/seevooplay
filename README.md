@@ -37,12 +37,12 @@ There is not (yet) a containerized distribution of Seevooplay, but if you are fa
 2. Add to INSTALLED_APPS in your settings.py:
 ```
 'djrichtextfield',  # required for seevooplay
-'seevooplay.seevooplay',
+'seevooplay',
 ```
 3. Add settings for django-richtextfield in your settings.py. See [django-richtextfield's docs](https://github.com/jaap3/django-richtextfield#django-rich-text-field) for details, or copy the DJRICHTEXTFIELD_CONFIG stanza from Seevooplay's config/settings/base.py.
 4. In your main urls.py, add this import:
 ```
-from seevooplay.seevooplay.views import email_guests, event_page
+from seevooplay.views import email_guests, event_page
 ```
 ... and these urlpatterns:
 ```
