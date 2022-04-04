@@ -24,13 +24,13 @@ def event_page(request, event_id, guest_uuid=None):
     event = Event.objects.get(id=event_id)
 
     start_datetime = event.start_datetime.astimezone(tz=TZ)
-    end_datetime = event.end_datetime.astimezone(tz=TZ)
-    if start_datetime.date() == end_datetime.date():
+    end_datetime = event.end_datetime.astimezone(tz=TZ) if event.end_datetime else None
+    if end_datetime and start_datetime.date() == end_datetime.date():
         date_display = f"{date_format(start_datetime.date())} {time_format(start_datetime.time())} – {time_format(end_datetime.time())}"
     elif end_datetime:
         date_display = f'{date_format(start_datetime)} {time_format(start_datetime)} – {date_format(end_datetime)} {time_format(end_datetime)}'
     else:
-        date_display = date_format(start_datetime)
+        date_display = f'{date_format(start_datetime)} {time_format(start_datetime)}'
 
     if guest_uuid is None:
         if not request.user.is_staff:
