@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "seevooplay/base.html" %}
 {% load i18n static %}
 
 {% block title %}{{ event.name }} {{ block.super }}{% endblock %}
@@ -18,9 +18,11 @@
         </ul>
     {% endif %}
 
-    <div class="event-image">
-        <img alt="" src="{{ event.image.url }}">
-    </div>
+    {% if event.image %}
+        <div class="event-image">
+            <img alt="" src="{{ event.image.url }}">
+        </div>
+    {% endif %}
 
     <p class="greeting">
         {% if guest %}
