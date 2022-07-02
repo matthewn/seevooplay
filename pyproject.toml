@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "seevooplay"
-version = "1.0.5"
+version = "1.0.6"
 description = "Seevooplay is a Django app for online invitations and RSVPs."
 authors = ["Matthew Newton <matthewn@mahnamahna.net>"]
 readme = "README.md"
@@ -18,10 +18,11 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-Django = "^3.2.4"
+Django = ">=3.2.5"
 django-model-utils = "^4.1.1"
 django-richtextfield = "^1.6.1"
 Pillow = "^9.1.0"
+pytz = "^2022.1"
 
 [tool.poetry.dev-dependencies]
 django-extensions = "^3.1.3"
