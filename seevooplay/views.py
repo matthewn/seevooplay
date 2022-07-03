@@ -8,13 +8,13 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils.formats import date_format, time_format
 
-import pytz
+import zoneinfo
 
 from .forms import EmailGuestsForm, ReplyForm
 from .models import Event, Guest, Reply
 from .utils import send_guest_emails, send_reply_notifications
 
-TZ = pytz.timezone(settings.TIME_ZONE)
+TZ = zoneinfo.ZoneInfo(settings.TIME_ZONE)
 
 
 def event_page(request, event_id, guest_uuid=None):

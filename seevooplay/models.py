@@ -5,9 +5,9 @@ from django.utils.html import mark_safe
 from djrichtextfield.models import RichTextField
 from model_utils.models import TimeStampedModel, UUIDModel
 
-import pytz
+import zoneinfo
 
-TZ = pytz.timezone(settings.TIME_ZONE)
+TZ = zoneinfo.ZoneInfo(settings.TIME_ZONE)
 
 
 class Guest(TimeStampedModel, UUIDModel):
