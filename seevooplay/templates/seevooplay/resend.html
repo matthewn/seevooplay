@@ -1,0 +1,46 @@
+{% extends "seevooplay/base.html" %}
+{% load i18n static %}
+
+{% block title %}resend invitations {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'seevooplay/css/event.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'seevooplay/css/resend.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="seevooplay">
+
+    <div class="resend">
+        <h2>resend invitations</h2>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="field-wrapper {{ field.html_name }}">
+                    {{ field.errors }}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <p class="help">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <input type="submit" value="resend invitations for this address">
+        </form>
+    </div>
+
+    <footer>
+        powered by
+        <a target="_blank" href="https://github.com/matthewn/seevooplay">Seevooplay</a>
+    </footer>
+</div>
+{% endblock %}

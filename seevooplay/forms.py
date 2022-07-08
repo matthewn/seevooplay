@@ -1,6 +1,13 @@
 from django import forms
 
 
+class ResendForm(forms.Form):
+    email = forms.EmailField(
+        label='your email address: ',
+        required=True,
+    )
+
+
 class ReplyForm(forms.Form):
     status = forms.ChoiceField(
         label='Will you attend?',

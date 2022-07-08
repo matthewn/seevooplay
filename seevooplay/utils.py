@@ -25,10 +25,11 @@ def send_guest_emails(request, event, subject, message, from_email, guest_list):
     messages.add_message(request, messages.INFO, f'Email sent to: {recipients}')
 
 
-def send_invitations(request, event, from_email, guest_list):
+def send_invitations(request, event, from_email, guest_list, quiet=False):
     """
     Send invitation emails.
     This is triggered by the save_model() method in EventAdmin.
+    Also triggered by views.resend_page().
     """
     subject = f'[invitation] {event.name}'
     template = get_template('seevooplay/invitation_email.txt')
@@ -42,7 +43,12 @@ def send_invitations(request, event, from_email, guest_list):
         body = template.render(context)
         send_mail(subject, body, from_email, (guest.email,))
     recipients = ', '.join([g.email for g in guest_list])
-    messages.add_message(request, messages.INFO, f'Email sent to: {recipients}')
+    if quiet is False:
+        messages.add_message(
+            request,
+            messages.INFO,
+            f'Email sent to: {recipients}'
+        )
 
 
 def send_reply_notifications(request, reply, from_email, address_list):

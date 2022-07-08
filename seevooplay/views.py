@@ -8,11 +8,12 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils.formats import date_format, time_format
 
+import datetime as dt
 import zoneinfo
 
-from .forms import EmailGuestsForm, ReplyForm
+from .forms import EmailGuestsForm, ReplyForm, ResendForm
 from .models import Event, Guest, Reply
-from .utils import send_guest_emails, send_reply_notifications
+from .utils import send_guest_emails, send_invitations, send_reply_notifications
 
 TZ = zoneinfo.ZoneInfo(settings.TIME_ZONE)
 
@@ -114,6 +115,54 @@ def event_page(request, event_id, guest_uuid=None):
             'maybe_replies_count': maybe_replies_count,
             'date_display': date_display,
         },
+    )
+
+
+def resend_page(request):
+    """
+    This view provides an email address field and a submit button:
+    Enter an email, and seevooplay will resend any active invitations
+    for that email address.
+    """
+    if request.method == 'POST':
+        email = request.POST['email']
+        guest = None
+        try:
+            guest = Guest.objects.get(email=email)
+        except Guest.DoesNotExist:
+            messages.add_message(
+                request,
+                messages.ERROR,
+                f'Sorry, {email} is not in our records.',
+            )
+        if guest:
+            invites = Reply.objects.filter(
+                guest__email=email
+            ).filter(event__start_datetime__gt=dt.datetime.now().date())
+            if len(invites) > 0:
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    f'Hey there, {guest.name}! There\'s email headed your way.',
+                )
+            else:
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    f'Sorry, no outstanding invites for you, {guest.name}.',
+                )
+            for invite in invites:
+                send_invitations(
+                    request,
+                    invite.event,
+                    None,
+                    [guest, ],
+                    quiet=True,
+                )
+    return TemplateResponse(
+        request,
+        'seevooplay/resend.html',
+        {'form': ResendForm, },
     )
 
 

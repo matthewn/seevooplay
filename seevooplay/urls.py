@@ -2,14 +2,15 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 
-from .views import email_guests, event_page
+from .views import email_guests, event_page, resend_page
 
 urlpatterns = [
     path('admin/email_guests/<int:event_id>/', email_guests, name='email_guests'),
     path('admin/', admin.site.urls),
     path('rsvp/<int:event_id>/', event_page, name='invitation'),
     path('rsvp/<int:event_id>/<guest_uuid>/', event_page),
-    path('djrichtextfield/', include('djrichtextfield.urls'))
+    path('djrichtextfield/', include('djrichtextfield.urls')),
+    path('', resend_page),
 ]
 
 

@@ -1,0 +1,17 @@
+#seevooplay {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-align: center;
+  width: 100%;
+}
+
+#seevooplay .resend input[type='email'] {
+  font-size: 1.15rem;
+  margin: 2rem 0;
+}
+
+#seevooplay .resend input[type='submit'] {
+  font-size: 1rem;
+  padding: .5rem 1rem;
+}
