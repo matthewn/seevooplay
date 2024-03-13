@@ -222,11 +222,14 @@ def email_guests(request, event_id):
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
 
-            send_guest_emails(request, event, subject, message, None, recipients)
+            if recipients:
+                send_guest_emails(request, event, subject, message, None, recipients)
+                return HttpResponseRedirect(
+                    reverse('admin:seevooplay_event_change', args=(event_id,))
+                )
+            else:
+                messages.add_message(request, messages.ERROR, 'No recipients selected!')
 
-            return HttpResponseRedirect(
-                reverse('admin:seevooplay_event_change', args=(event_id,))
-            )
 
     # if a GET (or any other method) we'll create a blank form
     else:
