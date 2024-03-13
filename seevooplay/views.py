@@ -7,15 +7,15 @@ from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils.formats import date_format, time_format
+from zoneinfo import ZoneInfo
 
 import datetime as dt
-import zoneinfo
 
 from .forms import EmailGuestsForm, ReplyForm, ResendForm
 from .models import Event, Guest, Reply
 from .utils import send_guest_emails, send_invitations, send_reply_notifications
 
-TZ = zoneinfo.ZoneInfo(settings.TIME_ZONE)
+TZ = ZoneInfo(settings.TIME_ZONE)
 
 
 def event_page(request, event_id, guest_uuid=None):
@@ -35,6 +35,7 @@ def event_page(request, event_id, guest_uuid=None):
 
     if guest_uuid is None:
         if not request.user.is_staff:
+            # no snooping!
             raise PermissionDenied
         else:
             guest = None
