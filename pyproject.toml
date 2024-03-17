@@ -18,10 +18,10 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-Django = "^4.2"
-django-model-utils = "^4.1.1"
-django-richtextfield = "^1.6.1"
-Pillow = "^10.2"
+Django = "*"
+django-model-utils = "*"
+django-richtextfield = "*"
+Pillow = "*"
 django-extensions = "*"
 
 [tool.poetry.dev-dependencies]
