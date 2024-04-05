@@ -230,7 +230,6 @@ def email_guests(request, event_id):
             else:
                 messages.add_message(request, messages.ERROR, 'No recipients selected!')
 
-
     # if a GET (or any other method) we'll create a blank form
     else:
         form = EmailGuestsForm()
