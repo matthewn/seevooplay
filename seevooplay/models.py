@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils.html import mark_safe
 
 from djrichtextfield.models import RichTextField
@@ -61,6 +62,9 @@ class Event(TimeStampedModel):
 
     def __str__(self):
         return f'{self.name} ({self.start_datetime.astimezone(TZ).strftime("%x %I:%M %p %Z")})'
+
+    def get_absolute_url(self):
+        return reverse('invitation', kwargs={'event_id': self.id})
 
 
 class ReplyStatus(models.TextChoices):

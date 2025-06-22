@@ -23,6 +23,7 @@ django-model-utils = "*"
 django-richtextfield = "*"
 Pillow = "*"
 django-extensions = "*"
+django-debugtools = "^2.0"
 
 [tool.poetry.dev-dependencies]
 django-debugtools = "*"

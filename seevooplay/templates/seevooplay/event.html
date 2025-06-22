@@ -1,4 +1,5 @@
 {% extends "seevooplay/base.html" %}
+{% load add_to_calendar %}
 {% load i18n static %}
 
 {% block title %}{{ event.name }} {{ block.super }}{% endblock %}
@@ -62,6 +63,11 @@
         <tr><td>Details:</td><td>{{ event.details|safe }}</td></tr>
     </table>
 
+    <div style="text-align: center;">
+        {% url 'event_page' event_id=event.id guest_uuid=guest.id as event_page_path %}
+        {% add_to_calendar event.start_datetime event.end_datetime event.name event.location_address request.scheme request.get_host event_page_path %}
+    </div>
+
     <div class="bottom-container">
         <div id="rsvp" class="reply-form">
             <h2>RSVP</h2>
@@ -70,15 +76,11 @@
                 {% for field in form %}
                     <div class="field-wrapper {{ field.html_name }}">
                         {{ field.errors }}
-                        {% if field.name != 'extra_guests' %}
-                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                        {% endif %}
+                        {% if field.name != 'extra_guests' %}<label for="{{ field.id_for_label }}">{{ field.label }}</label>{% endif %}
                         {% if field.name == 'extra_guests' %}I will bring {% endif %}
                         {{ field }}
                         {% if field.name == 'extra_guests' %} people with me.{% endif %}
-                        {% if field.help_text %}
-                            <p class="help">{{ field.help_text|safe }}</p>
-                        {% endif %}
+                        {% if field.help_text %}<p class="help">{{ field.help_text|safe }}</p>{% endif %}
                     </div>
                 {% endfor %}
                 <input type="submit" value="post my reply">

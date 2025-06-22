@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/email_guests/<int:event_id>/', email_guests, name='email_guests'),
     path('admin/', admin.site.urls),
     path('rsvp/<int:event_id>/', event_page, name='invitation'),
-    path('rsvp/<int:event_id>/<guest_uuid>/', event_page),
+    path('rsvp/<int:event_id>/<guest_uuid>/', event_page, name='event_page'),
     path('djrichtextfield/', include('djrichtextfield.urls')),
     path('', resend_page),
 ]
