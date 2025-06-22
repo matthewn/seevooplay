@@ -6,11 +6,7 @@ import datetime
 register = template.Library()
 
 
-def _generate_calendar_links(start_datetime, end_datetime, title, location, scheme, host, url):
-    """
-    Internal function to generate calendar links for different services.
-    Returns a dictionary with event-creating URLs for each calendar service.
-    """
+def _generate_calendar_links(title, start_datetime, end_datetime, location, scheme, host, path):
     if not isinstance(start_datetime, datetime.datetime):
         return {}
 
@@ -20,8 +16,8 @@ def _generate_calendar_links(start_datetime, end_datetime, title, location, sche
 
     title_encoded = quote(title)
     location_encoded = quote(location)
-    url = scheme + '://' + host + url
-    description = f'More info: {url}'
+    url = f'{scheme}://{host}{path}' if scheme and host and path else ''
+    description = f'More info: {url}' if url else ''
     description_encoded = quote(description)
 
     # format dates for Google/Yahoo (all use YYYYMMDDTHHMMSSZ format)
@@ -61,7 +57,7 @@ def _generate_calendar_links(start_datetime, end_datetime, title, location, sche
     ics_description = description.replace('\n', '\\n')
     ics_content = f"""BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Your Site//Add to Calendar//EN
+PRODID:-//Seevooplay//Add to Calendar//EN
 BEGIN:VEVENT
 UID:{start_datetime.strftime('%Y%m%d%H%M%S')}@yoursite.com
 DTSTAMP:{datetime.datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}
@@ -84,11 +80,11 @@ END:VCALENDAR"""
 
 
 @register.simple_tag
-def add_to_calendar(start_datetime, end_datetime, title, location, scheme, host, path):
-    calendar_links = _generate_calendar_links(start_datetime, end_datetime, title, location, scheme, host, path)
+def add_to_calendar(title, start_datetime, end_datetime=None, location='', scheme='', host='', path=''):
+    calendar_links = _generate_calendar_links(title, start_datetime, end_datetime, location, scheme, host, path)
 
     if not calendar_links:
-        return ""
+        return ''
 
     html = f"""
     <div class="add-to-calendar">
@@ -136,5 +132,5 @@ def add_to_calendar(start_datetime, end_datetime, title, location, scheme, host,
 
 
 @register.simple_tag
-def add_to_calendar_simple(start_datetime, end_datetime, title, location, scheme, host, path):
-    return _generate_calendar_links(start_datetime, end_datetime, title, location, scheme, host, path)
+def add_to_calendar_simple(title, start_datetime, end_datetime=None, location='', scheme='', host='', path=''):
+    return _generate_calendar_links(title, start_datetime, end_datetime, location, scheme, host, path)

@@ -65,7 +65,7 @@
 
     <div style="text-align: center;">
         {% url 'event_page' event_id=event.id guest_uuid=guest.id as event_page_path %}
-        {% add_to_calendar event.start_datetime event.end_datetime event.name event.location_address request.scheme request.get_host event_page_path %}
+        {% add_to_calendar event.name event.start_datetime event.end_datetime event.location_address request.scheme request.get_host event_page_path %}
     </div>
 
     <div class="bottom-container">
