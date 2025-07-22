@@ -47,12 +47,10 @@ class EventAdmin(admin.ModelAdmin):
     inlines = (StatusesInline,)
     list_display = ('__str__', 'created', 'modified')
 
-    def save_model(self, request, obj, form, change):
+    def process_invitees(self, request, obj):
         """
-        Do some things with the raw data in the 'invitees' field.
-
-        (1) Convert the raw guestlist from 'invitees' into Guest objects.
-        (2) Trigger email invitations for newly-added guests.
+        Convert a raw guestlist from the 'invitees' field into Guest objects.
+        Returns a list of all the event's Guest objects.
         """
         invitees = (
             obj.invitees.replace('"', '').replace('<', '').replace('>', '')
@@ -69,7 +67,7 @@ class EventAdmin(admin.ModelAdmin):
                 validate_email(email)
                 name = ' '.join(words[:-1])
                 guest = Guest.objects.get_or_create(email=email)[0]
-                guest.name = name or email
+                guest.name = name or email.split('@')[0]
                 guest.save()
                 all_guests.append(guest)
             except ValidationError:
@@ -78,6 +76,13 @@ class EventAdmin(admin.ModelAdmin):
                     messages.ERROR,
                     f'{email} is not a valid email address.',
                 )
+        return all_guests
+
+    def save_model(self, request, obj, form, change):
+        """
+        Process 'invitees' field and send email invitations to newly-added guests.
+        """
+        all_guests = self.process_invitees(request, obj)
         new_guests = []
         for guest in all_guests:
             if obj._state.adding or guest not in obj.guests.all():
