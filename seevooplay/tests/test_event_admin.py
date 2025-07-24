@@ -1,9 +1,46 @@
+from bs4 import BeautifulSoup
 from types import SimpleNamespace
+from zoneinfo import ZoneInfo
 
-from seevooplay.models import Guest
+from seevooplay.models import Event, Guest
 from seevooplay.admin import EventAdmin
 
-# import pytest
+import datetime as dt
+import pytest
+
+
+@pytest.fixture
+def guest1(db):
+    guest1 = Guest.objects.create(name='Guest One', email='guest1@example.org')
+    guest1.save()
+    yield guest1
+    guest1.delete()
+
+
+@pytest.fixture
+def guest2(db):
+    guest2 = Guest.objects.create(name='Guest Two', email='guest2@example.org')
+    guest2.save()
+    yield guest2
+    guest2.delete()
+
+
+@pytest.fixture
+def event(db, guest1, guest2):
+    event = Event.objects.create(
+        name='Fake Event',
+        host1_name='Groovy',
+        host1_email='groovy@example.org',
+        invitees='Guest One guest1@example.org, Guest Two guest2@example.org',
+        start_datetime=dt.datetime(
+            2030, 1, 1, 12, tzinfo=ZoneInfo('America/Los_Angeles')
+        ),
+        location_name='Fake Location',
+    )
+    event.guests.add(guest1, guest2)
+    event.save()
+    yield event
+    event.delete()
 
 
 def test_process_invitees(db):
@@ -15,14 +52,10 @@ def test_process_invitees(db):
 
     assert len(all_guests) == 4
     assert Guest.objects.count() == 4
-    assert Guest.objects.filter(name='prince').exists()
-    assert Guest.objects.filter(name='madonna').exists()
-    assert Guest.objects.filter(name='Rip Torn').exists()
-    assert Guest.objects.filter(name='Tim Berners Lee').exists()
-    assert Guest.objects.filter(email='prince@example.org').exists()
-    assert Guest.objects.filter(email='madonna@example.org').exists()
-    assert Guest.objects.filter(email='rip_torn@example.org').exists()
-    assert Guest.objects.filter(email='tim@example.org').exists()
+    assert Guest.objects.filter(name='prince', email='prince@example.org').exists()
+    assert Guest.objects.filter(name='madonna', email='madonna@example.org').exists()
+    assert Guest.objects.filter(name='Rip Torn', email='rip_torn@example.org').exists()
+    assert Guest.objects.filter(name='Tim Berners Lee', email='tim@example.org').exists()
 
 
 def test_process_invitees_invalid_email(monkeypatch):
@@ -40,12 +73,7 @@ def test_process_invitees_invalid_email(monkeypatch):
     assert captured_messages[0] == 'prince@nowhere is not a valid email address.'
 
 
-def test_save_model(db, admin_client, monkeypatch):
-    def mock_send_invitations(request, obj, from_email, guest_list):
-        assert len(guest_list) == 2
-
-    monkeypatch.setattr('seevooplay.admin.send_invitations', mock_send_invitations)
-
+def test_save_model_new(db, admin_client, mailoutbox):
     response = admin_client.post(
         '/admin/seevooplay/event/add/',
         {
@@ -63,8 +91,53 @@ def test_save_model(db, admin_client, monkeypatch):
         },
     )
 
+    assert len(mailoutbox) == 2
     assert response.status_code == 302  # should redirect after successful save
     response = admin_client.get(response.url)  # fetch content of page we got redirected to
     assert 'was added successfully' in response.content.decode()
     assert 'New invitees added for My Event: larry, moe' in response.content.decode()
     assert Guest.objects.count() == 2
+
+
+def test_save_model_existing(db, admin_client, mailoutbox, event, guest1, guest2):
+    # first, GET the change form to get current field values
+    response = admin_client.get(f'/admin/seevooplay/event/{event.pk}/change/')
+    assert response.status_code == 200
+    assert event.guests.all().count() == 2
+
+    # extract form data from the response
+    form_data = {}
+    soup = BeautifulSoup(response.content, 'html.parser')
+    for input_field in soup.find_all(['input', 'select', 'textarea']):
+        name = input_field.get('name')
+        if name:
+            if input_field.name == 'input':
+                if input_field.get('type') == 'checkbox':
+                    form_data[name] = input_field.get('checked') is not None
+                else:
+                    form_data[name] = input_field.get('value', '')
+            elif input_field.name == 'select':
+                selected = input_field.find('option', selected=True)
+                form_data[name] = selected.get('value', '') if selected else ''
+            elif input_field.name == 'textarea':
+                form_data[name] = input_field.get_text()
+
+    # add to invitees field and submit
+    existing_invitees = form_data.get('invitees', '')
+    form_data['invitees'] = existing_invitees + '\r\nlarry@example.org'
+    form_data['_save'] = 'Save'
+    response = admin_client.post(
+        f'/admin/seevooplay/event/{event.pk}/change/',
+        form_data,
+    )
+
+    # check the results
+    assert len(mailoutbox) == 1
+    assert response.status_code == 302  # redirect after successful save
+    response = admin_client.get(response.url)  # fetch content of page we got redirected to
+    assert 'New invitees added for Fake Event: larry' in response.content.decode()
+    larry = Guest.objects.get(name='larry')
+    event.refresh_from_db()
+    assert event.invitees.endswith('org\r\nlarry@example.org')
+    assert event.guests.all().count() == 3
+    assert guest1 and guest2 and larry in event.guests.all()
