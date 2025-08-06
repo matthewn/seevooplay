@@ -11,9 +11,9 @@ from zoneinfo import ZoneInfo
 
 import datetime as dt
 
+from .emails import send_guest_emails, send_invitations, send_reply_notifications
 from .forms import EmailGuestsForm, ReplyForm, ResendForm
 from .models import Event, Guest, Reply
-from .utils import send_guest_emails, send_invitations, send_reply_notifications
 
 TZ = ZoneInfo(settings.TIME_ZONE)
 

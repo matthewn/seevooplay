@@ -2,12 +2,12 @@ from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 
+from .emails import send_invitations
 from .models import (
     Event,
     Guest,
     Reply,
 )
-from .utils import send_invitations
 
 
 class StatusesInline(admin.TabularInline):
