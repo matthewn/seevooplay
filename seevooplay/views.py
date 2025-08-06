@@ -90,16 +90,12 @@ def event_page(request, event_id, guest_uuid=None):
     none_replies = replies.filter(status='')
 
     yes_replies_count = yes_replies.count()
-    if yes_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']:
-        yes_replies_count += yes_replies.aggregate(
-            Sum('extra_guests')
-        )['extra_guests__sum']
+    if yes_extra := yes_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']:
+        yes_replies_count += yes_extra
 
     maybe_replies_count = maybe_replies.count()
-    if maybe_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']:
-        maybe_replies_count += maybe_replies.aggregate(
-            Sum('extra_guests')
-        )['extra_guests__sum']
+    if maybe_extra := maybe_replies.aggregate(Sum('extra_guests'))['extra_guests__sum']:
+        maybe_replies_count += maybe_extra
 
     return TemplateResponse(
         request,
