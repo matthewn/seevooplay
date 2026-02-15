@@ -44,7 +44,7 @@ class Event(TimeStampedModel):
         Guest,
         blank=True,
         through='Reply',
-        verbose_name='Invited guests'
+        verbose_name='Invited guests',
     )
     invitees = models.TextField(
         blank=True,

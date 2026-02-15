@@ -153,7 +153,7 @@ def resend_page(request):
                     request,
                     invite.event,
                     None,
-                    [guest, ],
+                    [guest],
                     quiet=True,
                 )
     return TemplateResponse(
