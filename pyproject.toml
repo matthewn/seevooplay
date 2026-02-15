@@ -1,9 +1,9 @@
 [project]
 name = "seevooplay"
-version = "1.0.9"
+version = "1.99"
 description = "Seevooplay is a Django app for online invitations and RSVPs."
 authors = [{ name = "Matthew Newton", email = "matthewn@mahnamahna.net" }]
-requires-python = ">=3.8, <4"
+requires-python = ">=3.11, <4"
 readme = "README.md"
 license = "GPL-3.0-only"
 keywords = ["django"]
@@ -15,11 +15,12 @@ classifiers = [
     "Programming Language :: Python",
 ]
 dependencies = [
-    "Django",
+    "Django>=5.2",
     "django-model-utils",
     "django-richtextfield",
     "Pillow",
     "django-extensions",
+    "shortuuid>=1.0.13",
 ]
 
 [project.urls]
