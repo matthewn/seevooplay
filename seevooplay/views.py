@@ -40,7 +40,10 @@ def event_page(request, event_id, guest_uuid=None):
         else:
             guest = None
     else:
-        guest = Guest.objects.get(id=guest_uuid)
+        try:
+            guest = Guest.objects.get(short_uuid=guest_uuid)
+        except Guest.DoesNotExist:
+            guest = Guest.objects.get(legacy_uuid=guest_uuid)
 
     if guest:
         guest_reply = Reply.objects.get(event=event, guest=guest)

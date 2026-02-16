@@ -4,16 +4,23 @@ from django.urls import reverse
 from django.utils.html import mark_safe
 
 from djrichtextfield.models import RichTextField
-from model_utils.models import TimeStampedModel, UUIDModel
+from model_utils.models import TimeStampedModel
+from shortuuid.django_fields import ShortUUIDField
 
 import zoneinfo
 
 TZ = zoneinfo.ZoneInfo(settings.TIME_ZONE)
 
 
-class Guest(TimeStampedModel, UUIDModel):
+class Guest(TimeStampedModel):
     name = models.CharField(max_length=64)
     email = models.EmailField(unique=True)
+    short_uuid = ShortUUIDField(
+        length=16, unique=True, editable=False, verbose_name="short UUID"
+    )
+    legacy_uuid = models.UUIDField(
+        null=True, blank=True, editable=False, verbose_name="legacy UUID"
+    )
 
     class Meta:
         ordering = ('name',)

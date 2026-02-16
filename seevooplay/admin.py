@@ -105,7 +105,7 @@ class EventAdmin(admin.ModelAdmin):
 class GuestAdmin(admin.ModelAdmin):
     inlines = (StatusesInline,)
     list_display = ('__str__', 'created', 'modified')
-    readonly_fields = ('id', 'email')
+    readonly_fields = ('email', 'short_uuid', 'legacy_uuid')
 
 
 # @admin.register(Reply)

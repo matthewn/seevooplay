@@ -2,7 +2,7 @@ import re
 
 
 def test_event_page(event, guest1, client):
-    response = client.get(f'/rsvp/1/{guest1.id}/')
+    response = client.get(f'/rsvp/1/{guest1.short_uuid}/')
     assert response.status_code == 200
     assert 'No Reply: 2' in response.content.decode()
 
@@ -20,7 +20,7 @@ def test_event_page_no_snooping(event, client):
 
 def test_event_page_reply_yes(event, guest1, client, mailoutbox):
     response = client.post(
-        f'/rsvp/1/{guest1.id}/',
+        f'/rsvp/1/{guest1.short_uuid}/',
         {
             'status': 'Y',
             'extra_guests': '1',
@@ -38,7 +38,7 @@ def test_event_page_reply_yes(event, guest1, client, mailoutbox):
 
 def test_event_page_reply_no(event, guest1, client, mailoutbox):
     response = client.post(
-        f'/rsvp/1/{guest1.id}/',
+        f'/rsvp/1/{guest1.short_uuid}/',
         {
             'status': 'N',
             'extra_guests': '0',
@@ -54,7 +54,7 @@ def test_event_page_reply_no(event, guest1, client, mailoutbox):
 
 def test_event_page_reply_maybe(event, guest1, client, mailoutbox):
     response = client.post(
-        f'/rsvp/1/{guest1.id}/',
+        f'/rsvp/1/{guest1.short_uuid}/',
         {
             'status': 'M',
             'extra_guests': '3',

@@ -7,7 +7,7 @@ Greetings, {{ guest.name }}!
 
 To see the full invitation, and to RSVP, please visit this page:
 
-{{ protocol }}://{{ host }}{% url 'invitation' event_id=event.id %}{{ guest.id }}/
+{{ protocol }}://{{ host }}{% url 'invitation' event_id=event.id %}{{ guest.short_uuid }}/
 
 (This link is personalized to you -- do not share!)
 
