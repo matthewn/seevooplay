@@ -6,7 +6,7 @@ class CustomAdminSite(admin.AdminSite):
     site_header = 'Seevooplay'
     site_title = 'Seevooplay'
 
-    def get_app_list(self, request):
+    def get_app_list(self, request, app_label=None):
         """
         Override this AdminSite method to reorder the app list on the index
         page. Must return a list of dicts.
