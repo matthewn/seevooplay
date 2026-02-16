@@ -1,10 +1,10 @@
 # Seevooplay
 
-Seevooplay is a Django app for online invitations and RSVPs. Think of it as your personal, selfhosted version of Evite (or a similar service). Throwing a party? Don't give all your friends' email addresses to Evite. Don't expect your friends to be on Facebook. Embrace the indieweb, kick the corporate middleman to the curb, and let Seevooplay send email invitations and collect responses for you! That's the pitch, anyway.
+Seevooplay is a Django app for online invitations and RSVPs. <b>Think of it as your personal, selfhosted version of Partiful, Evite, Facebook Invitations, and the like.</b> Throwing a party? Don't give all your friends' phone numbers to Partiful, don't give their email addresses to Evite, don't expect them to be on Facebook. Embrace the indieweb, kick the corporate middleman to the curb, and let Seevooplay send email invitations and collect responses for you! That's the pitch, anyway.
 
-Seevooplay was crafted for *personal* use; it is not architected for scale. It is directly inspired by [DaVite](http://marginalhacks.com/Hacks/DaVite/), a 2000-line Perl script last updated in 2004 -- a very cool and useful hack for its time, but inappropriate for use on the web in 2024. Seevooplay aims to solve the same problems DaVite did, in much the same way, but with modern, maintainable, extensible code, atop the rock-solid foundation of Python and Django.
+Seevooplay was crafted for *personal* use; it is not architected for scale. It is directly inspired by [DaVite](http://marginalhacks.com/Hacks/DaVite/), a 2000-line Perl script last updated in 2004 -- a very cool and useful hack for its time, but inappropriate for use on the web in 2025. Seevooplay aims to solve the same problems DaVite did, in much the same way, but with modern, maintainable, extensible code, atop the rock-solid foundation of Python and Django.
 
-The owner of a Seevooplay instance interacts with Seevooplay mainly through Django's admin. [[Screenshot 1](https://user-images.githubusercontent.com/782716/129496242-c791d261-0d5f-43a7-b65d-b8759685b9af.png), [Screenshot 2](https://user-images.githubusercontent.com/782716/129496271-2591b149-db9f-41bd-96ab-9cad18e91c08.png)] Invitees generally interact with a single page, whose template and styling is deliberately minimalistic and intended to be customized. [[Screenshot 3](https://user-images.githubusercontent.com/782716/129496302-b2ebeff9-c73b-49cc-b971-706db8589f05.png)] Through the magic of the CSS cascade and Django [template overriding](https://docs.djangoproject.com/en/4.2/howto/overriding-templates/), you can make what your guests see as gorgeous (or as ugly) as you like.
+The owner of a Seevooplay instance interacts with Seevooplay mainly through Django's admin. [[Screenshot 1](https://user-images.githubusercontent.com/782716/129496242-c791d261-0d5f-43a7-b65d-b8759685b9af.png), [Screenshot 2](https://user-images.githubusercontent.com/782716/129496271-2591b149-db9f-41bd-96ab-9cad18e91c08.png)] Invitees generally interact with a single page, whose default template and styling is deliberately minimalistic and intended to be customized. [[Screenshot 3](https://user-images.githubusercontent.com/782716/129496302-b2ebeff9-c73b-49cc-b971-706db8589f05.png)] Through the magic of the CSS cascade and Django [template overriding](https://docs.djangoproject.com/en/4.2/howto/overriding-templates/), you can make what your guests see as gorgeous (or as ugly) as you like.
 
 Your invitees will receive emails containing personalized links back to your Seevooplay instance. They won't have to create any sort of account (or log in) to RSVP to your event; a UUID in their link tells Seevooplay who they are.  *This means that forwarded links are problematic: If Alice forwards her invitation to Bob, Bob can RSVP as Alice.* In other words, from a security standpoint, Seevooplay is about as naive as it gets. For the casual, personal use cases Seevooplay is designed for, however, this model works. If it spooks you, your parties are much higher stakes than mine, and you should look for a different solution. :)
 
@@ -68,8 +68,8 @@ path('rsvp/<int:event_id>/<guest_uuid>/', event_page),
 
 # What Seevooplay Lacks
 
-- 'Add to calendar' functionality. This is probably something I'll hack on at some point.
-- Tests. Another thing I'm likely to throw together at some point.
+- ~~'Add to calendar' functionality. This is probably something I'll hack on at some point.~~ (Done in 2.0!)
+- ~~Tests. Another thing I'm likely to throw together at some point.~~ (Done in 2.0!)
 - Internationalization. I welcome pull requests to change this.
 - HTML emails. Plain text emails don't bother me, so this is unlikely to change unless someone else does the work.
 - Comprehensive documentation. If anyone other than me ends up using this, the docs will get better. In the meantime, if you try using Seevooplay and run into trouble, please open an issue on GitHub. I will help if I can.
