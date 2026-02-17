@@ -60,28 +60,33 @@ def test_save_model_new(db, admin_client, mailoutbox):
     assert Guest.objects.count() == 2
 
 
+def get_admin_form_data(response):
+    """Extract all form field values from a Django admin response."""
+    soup = BeautifulSoup(response.content, 'html.parser')
+    form_data = {}
+    for field in soup.find_all(['input', 'select', 'textarea']):
+        name = field.get('name')
+        if not name:
+            continue
+        if field.name == 'input':
+            if field.get('type') == 'checkbox':
+                form_data[name] = field.get('checked') is not None
+            else:
+                form_data[name] = field.get('value', '')
+        elif field.name == 'select':
+            selected = field.find('option', selected=True)
+            form_data[name] = selected.get('value', '') if selected else ''
+        elif field.name == 'textarea':
+            form_data[name] = field.get_text()
+    return form_data
+
+
 def test_save_model_existing(db, admin_client, mailoutbox, event, guest1, guest2):
-    # first, GET the change form to get current field values
+    # GET the change form to get current field values
     response = admin_client.get(f'/admin/seevooplay/event/{event.pk}/change/')
     assert response.status_code == 200
     assert event.guests.all().count() == 2
-
-    # extract form data from the response
-    form_data = {}
-    soup = BeautifulSoup(response.content, 'html.parser')
-    for input_field in soup.find_all(['input', 'select', 'textarea']):
-        name = input_field.get('name')
-        if name:
-            if input_field.name == 'input':
-                if input_field.get('type') == 'checkbox':
-                    form_data[name] = input_field.get('checked') is not None
-                else:
-                    form_data[name] = input_field.get('value', '')
-            elif input_field.name == 'select':
-                selected = input_field.find('option', selected=True)
-                form_data[name] = selected.get('value', '') if selected else ''
-            elif input_field.name == 'textarea':
-                form_data[name] = input_field.get_text()
+    form_data = get_admin_form_data(response)
 
     # add to invitees field and submit
     existing_invitees = form_data.get('invitees', '')
