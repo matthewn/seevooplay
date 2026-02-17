@@ -1,26 +1,32 @@
+from django.urls import reverse
+
 import re
 
 
 def test_event_page(event, guest1, client):
-    response = client.get(f'/rsvp/1/{guest1.short_uuid}/')
+    url = reverse('event_page', args=[event.id, guest1.short_uuid])
+    response = client.get(url)
     assert response.status_code == 200
     assert 'No Reply: 2' in response.content.decode()
 
 
 def test_event_page_admin_access(event, admin_client):
-    response = admin_client.get('/rsvp/1/')
+    url = reverse('invitation', args=[event.id])
+    response = admin_client.get(url)
     assert response.status_code == 200
     assert 'No Reply: 2' in response.content.decode()
 
 
 def test_event_page_no_snooping(event, client):
-    response = client.get('/rsvp/1/')
+    url = reverse('invitation', args=[event.id])
+    response = client.get(url)
     assert response.status_code == 403
 
 
 def test_event_page_reply_yes(event, guest1, client, mailoutbox):
+    url = reverse('event_page', args=[event.id, guest1.short_uuid])
     response = client.post(
-        f'/rsvp/1/{guest1.short_uuid}/',
+        url,
         {
             'status': 'Y',
             'extra_guests': '1',
@@ -37,8 +43,9 @@ def test_event_page_reply_yes(event, guest1, client, mailoutbox):
 
 
 def test_event_page_reply_no(event, guest1, client, mailoutbox):
+    url = reverse('event_page', args=[event.id, guest1.short_uuid])
     response = client.post(
-        f'/rsvp/1/{guest1.short_uuid}/',
+        url,
         {
             'status': 'N',
             'extra_guests': '0',
@@ -53,8 +60,9 @@ def test_event_page_reply_no(event, guest1, client, mailoutbox):
 
 
 def test_event_page_reply_maybe(event, guest1, client, mailoutbox):
+    url = reverse('event_page', args=[event.id, guest1.short_uuid])
     response = client.post(
-        f'/rsvp/1/{guest1.short_uuid}/',
+        url,
         {
             'status': 'M',
             'extra_guests': '3',
@@ -69,7 +77,7 @@ def test_event_page_reply_maybe(event, guest1, client, mailoutbox):
 
 
 def test_resend_emails(event, guest1, client, mailoutbox):
-    response = client.post('/', {'email': 'guest1@example.org'})
+    response = client.post(reverse('resend_page'), {'email': 'guest1@example.org'})
     assert len(mailoutbox) == 1
     assert (
         'Hey there, Guest One! There&#x27;s email headed your way.'
@@ -78,7 +86,7 @@ def test_resend_emails(event, guest1, client, mailoutbox):
 
 
 def test_resend_emails_unknown(event, client, mailoutbox):
-    response = client.post('/', {'email': 'foo@example.org'})
+    response = client.post(reverse('resend_page'), {'email': 'foo@example.org'})
     assert len(mailoutbox) == 0
     assert (
         'Sorry, foo@example.org is not in our records'
@@ -87,7 +95,7 @@ def test_resend_emails_unknown(event, client, mailoutbox):
 
 
 def test_resend_emails_past_event(past_event, guest1, client, mailoutbox):
-    response = client.post('/', {'email': 'guest1@example.org'})
+    response = client.post(reverse('resend_page'), {'email': 'guest1@example.org'})
     assert len(mailoutbox) == 0
     assert (
         'Sorry, no outstanding invites for you, Guest One.'
@@ -111,8 +119,9 @@ def process_test_email_response(response, admin_client):
 
 
 def test_email_guests_1(big_event, admin_client, mailoutbox):
+    url = reverse('admin:seevooplay_email_guests', args=[big_event.id])
     response = admin_client.post(
-        f'/admin/email_guests/{big_event.id}/',
+        url,
         {
             'want_reply_yes': ['on'],
             'want_reply_maybe': ['on'],
@@ -130,8 +139,9 @@ def test_email_guests_1(big_event, admin_client, mailoutbox):
 
 
 def test_email_guests_2(big_event, admin_client, mailoutbox):
+    url = reverse('admin:seevooplay_email_guests', args=[big_event.id])
     response = admin_client.post(
-        f'/admin/email_guests/{big_event.id}/',
+        url,
         {
             'want_reply_maybe': ['on'],
             'want_reply_no': ['on'],
@@ -148,8 +158,9 @@ def test_email_guests_2(big_event, admin_client, mailoutbox):
 
 
 def test_email_guests_3(big_event, admin_client, mailoutbox):
+    url = reverse('admin:seevooplay_email_guests', args=[big_event.id])
     response = admin_client.post(
-        f'/admin/email_guests/{big_event.id}/',
+        url,
         {
             'want_reply_none': ['on'],
             'want_have_not_viewed': ['on'],
@@ -163,8 +174,9 @@ def test_email_guests_3(big_event, admin_client, mailoutbox):
 
 
 def test_email_guests_4(big_event, admin_client, mailoutbox):
+    url = reverse('admin:seevooplay_email_guests', args=[big_event.id])
     response = admin_client.post(
-        f'/admin/email_guests/{big_event.id}/',
+        url,
         {
             'want_reply_yes': ['on'],
             'want_reply_maybe': ['on'],

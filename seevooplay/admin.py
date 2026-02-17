@@ -1,6 +1,7 @@
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.urls import path
 
 from .emails import send_invitations
 from .models import (
@@ -8,6 +9,7 @@ from .models import (
     Guest,
     Reply,
 )
+from .views import email_guests
 
 
 class StatusesInline(admin.TabularInline):
@@ -46,6 +48,18 @@ class EventAdmin(admin.ModelAdmin):
     )
     inlines = (StatusesInline,)
     list_display = ('__str__', 'created', 'modified')
+
+    def get_urls(self):
+        """Add custom URL for emailing guests"""
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                '<int:event_id>/email-guests/',
+                self.admin_site.admin_view(email_guests),
+                name='seevooplay_email_guests',
+            ),
+        ]
+        return custom_urls + urls
 
     def process_invitees(self, request, obj):
         """
