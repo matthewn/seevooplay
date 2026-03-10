@@ -124,8 +124,9 @@ def resend_page(request):
     Enter an email, and seevooplay will resend any active invitations
     for that email address.
     """
-    if request.method == 'POST':
-        email = request.POST['email']
+    form = ResendForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        email = form.cleaned_data['email']
         guest = None
         try:
             guest = Guest.objects.get(email=email)
@@ -162,7 +163,7 @@ def resend_page(request):
     return TemplateResponse(
         request,
         'seevooplay/resend.html',
-        {'form': ResendForm, },
+        {'form': form},
     )
 
 
