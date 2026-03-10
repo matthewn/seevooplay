@@ -6,6 +6,7 @@ from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.formats import date_format, time_format
 from zoneinfo import ZoneInfo
 
@@ -138,7 +139,7 @@ def resend_page(request):
         if guest:
             invites = Reply.objects.filter(
                 guest__email=email
-            ).filter(event__start_datetime__gt=dt.datetime.now().date())
+            ).filter(event__start_datetime__gt=timezone.now())
             if invites.exists():
                 messages.add_message(
                     request,
