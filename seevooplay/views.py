@@ -4,13 +4,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.formats import date_format, time_format
 from zoneinfo import ZoneInfo
-
-import datetime as dt
 
 from .emails import send_guest_emails, send_invitations, send_reply_notifications
 from .forms import EmailGuestsForm, ReplyForm, ResendForm
@@ -23,7 +22,7 @@ def event_page(request, event_id, guest_uuid=None):
     """
     Function-based view that drives the page our guests interact with.
     """
-    event = Event.objects.get(id=event_id)
+    event = get_object_or_404(Event, id=event_id)
 
     start_datetime = event.start_datetime.astimezone(tz=TZ)
     end_datetime = event.end_datetime.astimezone(tz=TZ) if event.end_datetime else None
@@ -44,7 +43,7 @@ def event_page(request, event_id, guest_uuid=None):
         try:
             guest = Guest.objects.get(short_uuid=guest_uuid)
         except Guest.DoesNotExist:
-            guest = Guest.objects.get(legacy_uuid=guest_uuid)
+            guest = get_object_or_404(Guest, legacy_uuid=guest_uuid)
 
     if guest:
         guest_reply = Reply.objects.get(event=event, guest=guest)
@@ -172,7 +171,7 @@ def email_guests(request, event_id):
     """
     Function-based view that drives an admin page for emailing our guests.
     """
-    event = Event.objects.get(id=event_id)
+    event = get_object_or_404(Event, id=event_id)
 
     if request.method == 'POST':
         # create a form instance and populate it with data from the request

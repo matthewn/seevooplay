@@ -20,13 +20,17 @@ def _generate_calendar_links(title, start_datetime, end_datetime, location, sche
     description = f'More info: {url}' if url else ''
     description_encoded = quote(description)
 
-    # format dates for Google/Yahoo (all use YYYYMMDDTHHMMSSZ format)
-    start_str = start_datetime.strftime('%Y%m%dT%H%M%SZ')
-    end_str = end_datetime.strftime('%Y%m%dT%H%M%SZ')
+    UTC = datetime.timezone.utc
+    start_utc = start_datetime.astimezone(UTC) if start_datetime.tzinfo else start_datetime.replace(tzinfo=UTC)
+    end_utc = end_datetime.astimezone(UTC) if end_datetime.tzinfo else end_datetime.replace(tzinfo=UTC)
 
-    # Outlook 365 uses ISO format dates (YYYY-MM-DDTHH:MM:SS.sssZ)
-    start_outlook = start_datetime.isoformat() + 'Z'
-    end_outlook = end_datetime.isoformat() + 'Z'
+    # format dates for Google/Yahoo/ICS (all use YYYYMMDDTHHMMSSZ format, UTC)
+    start_str = start_utc.strftime('%Y%m%dT%H%M%SZ')
+    end_str = end_utc.strftime('%Y%m%dT%H%M%SZ')
+
+    # Outlook 365 uses ISO format dates (YYYY-MM-DDTHH:MM:SSZ, UTC)
+    start_outlook = start_utc.strftime('%Y-%m-%dT%H:%M:%SZ')
+    end_outlook = end_utc.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     google_url = (
         f'https://calendar.google.com/calendar/render?'

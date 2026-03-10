@@ -21,14 +21,14 @@ def test_returns_all_calendar_keys():
 
 def test_none_end_datetime_uses_start():
     result = _generate_calendar_links('Party', START, None, 'Home', 'https', 'example.com', '/rsvp/1/')
-    start_str = START.strftime('%Y%m%dT%H%M%SZ')
-    assert f'dates={start_str}/{start_str}' in result['google']
+    start_utc_str = START.astimezone(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+    assert f'dates={start_utc_str}/{start_utc_str}' in result['google']
 
 
 def test_non_datetime_end_uses_start():
     result = _generate_calendar_links('Party', START, 'not a datetime', 'Home', 'https', 'example.com', '/rsvp/1/')
-    start_str = START.strftime('%Y%m%dT%H%M%SZ')
-    assert f'dates={start_str}/{start_str}' in result['google']
+    start_utc_str = START.astimezone(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+    assert f'dates={start_utc_str}/{start_utc_str}' in result['google']
 
 
 def test_with_url_includes_description():
