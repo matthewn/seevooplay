@@ -60,7 +60,7 @@ VERSION:2.0
 PRODID:-//Seevooplay//Add to Calendar//EN
 BEGIN:VEVENT
 UID:{start_datetime.strftime('%Y%m%d%H%M%S')}@yoursite.com
-DTSTAMP:{datetime.datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}
+DTSTAMP:{datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')}
 DTSTART:{start_str}
 DTEND:{end_str}
 SUMMARY:{title}

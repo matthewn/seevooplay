@@ -139,7 +139,7 @@ def resend_page(request):
             invites = Reply.objects.filter(
                 guest__email=email
             ).filter(event__start_datetime__gt=dt.datetime.now().date())
-            if len(invites) > 0:
+            if invites.exists():
                 messages.add_message(
                     request,
                     messages.INFO,
@@ -200,6 +200,9 @@ def email_guests(request, event_id):
             ]
             recipients = set(recipients)
 
+            have_viewed = None
+            have_not_viewed = None
+
             if form.cleaned_data['want_have_viewed']:
                 replies = Reply.objects.filter(event=event, has_viewed=True)
                 have_viewed = set([reply.guest for reply in replies])
@@ -209,13 +212,11 @@ def email_guests(request, event_id):
                 have_not_viewed = set([reply.guest for reply in replies])
 
             # time for some set operations!
-            if 'have_viewed' in locals() and 'have_not_viewed' in locals():
-                group_1 = recipients.intersection(have_viewed)
-                group_2 = recipients.intersection(have_not_viewed)
-                recipients = group_1.union(group_2)
-            elif 'have_viewed' in locals():
+            if have_viewed is not None and have_not_viewed is not None:
+                recipients = recipients.intersection(have_viewed | have_not_viewed)
+            elif have_viewed is not None:
                 recipients = recipients.intersection(have_viewed)
-            elif 'have_not_viewed' in locals():
+            elif have_not_viewed is not None:
                 recipients = recipients.intersection(have_not_viewed)
 
             subject = form.cleaned_data['subject']
