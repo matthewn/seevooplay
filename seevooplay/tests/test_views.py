@@ -1,6 +1,7 @@
 from django.urls import reverse
 
 import re
+import uuid
 
 
 def test_event_page(event, guest1, client):
@@ -74,6 +75,14 @@ def test_event_page_reply_maybe(event, guest1, client, mailoutbox):
     assert 'Maybe: 4' in html
     assert 'No Reply: 1' in html
     assert len(mailoutbox) == 1
+
+
+def test_event_page_legacy_uuid(event, guest1, client):
+    guest1.legacy_uuid = uuid.uuid4()
+    guest1.save()
+    url = reverse('event_page', args=[event.id, str(guest1.legacy_uuid)])
+    response = client.get(url)
+    assert response.status_code == 200
 
 
 def test_resend_emails(event, guest1, client, mailoutbox):
@@ -190,3 +199,17 @@ def test_email_guests_4(big_event, admin_client, mailoutbox):
     email_display_count = process_test_email_response(response, admin_client)
     assert email_display_count == 10
     assert len(mailoutbox) == 10
+
+
+def test_email_guests_no_recipients(big_event, admin_client, mailoutbox):
+    url = reverse('admin:seevooplay_email_guests', args=[big_event.id])
+    response = admin_client.post(
+        url,
+        {
+            'subject': ['foo'],
+            'message': ['bar'],
+        },
+    )
+    assert response.status_code == 200
+    assert 'No recipients selected!' in response.content.decode()
+    assert len(mailoutbox) == 0
