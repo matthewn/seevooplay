@@ -59,7 +59,7 @@ def _generate_calendar_links(title, start_datetime, end_datetime, location, sche
 VERSION:2.0
 PRODID:-//Seevooplay//Add to Calendar//EN
 BEGIN:VEVENT
-UID:{start_datetime.strftime('%Y%m%d%H%M%S')}@yoursite.com
+UID:{start_datetime.strftime('%Y%m%d%H%M%S')}@seevooplay
 DTSTAMP:{datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')}
 DTSTART:{start_str}
 DTEND:{end_str}
