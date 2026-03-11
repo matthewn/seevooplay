@@ -9,16 +9,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = 'django-insecure-z0qw0h&ez#1oxa$ro!qym5x%x=j-634fy$%jgbpi!(dzc44vqg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
+# list any domains you're serving from here
 ALLOWED_HOSTS = []
 
 # set your time zone here
 TIME_ZONE = 'America/Los_Angeles'
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
