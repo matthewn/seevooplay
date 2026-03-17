@@ -1,7 +1,7 @@
-from django.urls import reverse
-
 import re
 import uuid
+
+from django.urls import reverse
 
 
 def test_event_page(event, guest1, client):
@@ -85,6 +85,33 @@ def test_event_page_legacy_uuid(event, guest1, client):
     assert response.status_code == 200
 
 
+def test_event_page_same_day_end_datetime(same_day_event, guest1, client):
+    url = reverse('event_page', args=[same_day_event.id, guest1.short_uuid])
+    response = client.get(url)
+    assert response.status_code == 200
+    assert '–' in response.content.decode()
+
+
+def test_event_page_multiday_end_datetime(multiday_event, guest1, client):
+    url = reverse('event_page', args=[multiday_event.id, guest1.short_uuid])
+    response = client.get(url)
+    assert response.status_code == 200
+    assert '–' in response.content.decode()
+
+
+def test_event_page_reply_notifies_both_hosts(two_host_event, guest1, client, mailoutbox):
+    url = reverse('event_page', args=[two_host_event.id, guest1.short_uuid])
+    response = client.post(url, {'status': 'Y', 'extra_guests': '0', 'comment': ''})
+    assert response.status_code == 200
+    assert len(mailoutbox) == 2
+
+
+def test_email_guests_get(event, admin_client):
+    url = reverse('admin:seevooplay_email_guests', args=[event.id])
+    response = admin_client.get(url)
+    assert response.status_code == 200
+
+
 def test_resend_emails(event, guest1, client, mailoutbox):
     response = client.post(reverse('resend_page'), {'email': 'guest1@example.org'})
     assert len(mailoutbox) == 1
@@ -120,11 +147,9 @@ def process_test_email_response(response, admin_client):
     response = admin_client.get(response.url)  # fetch content of page we got redirected to
     pattern = r'<li class="info">Email sent to:\s*([^<]+)</li>'
     match = re.search(pattern, response.content.decode())
-    email_display_count = 0
-    if match:
-        email_list = match.group(1)
-        email_display_count = len([email.strip() for email in email_list.split(',') if email.strip()])
-        return email_display_count
+    assert match is not None, 'Expected "Email sent to:" message not found in response'
+    email_list = match.group(1)
+    return len([email.strip() for email in email_list.split(',') if email.strip()])
 
 
 def test_email_guests_1(big_event, admin_client, mailoutbox):

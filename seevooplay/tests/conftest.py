@@ -1,8 +1,8 @@
-from zoneinfo import ZoneInfo
-from seevooplay.models import Event, Guest, Reply
-
 import datetime as dt
 import pytest
+from zoneinfo import ZoneInfo
+
+from seevooplay.models import Event, Guest, Reply
 
 
 NUMBERS = [
@@ -28,20 +28,28 @@ for i in range(1, 13):
     globals()[f'guest{i}'] = create_guest_fixture(i)
 
 
+def make_event(guests, **kwargs):
+    """Factory helper for creating Event instances with sensible defaults."""
+    defaults = {
+        'name': 'Fake Event',
+        'host1_name': 'Groovy',
+        'host1_email': 'groovy@example.org',
+        'start_datetime': dt.datetime(2030, 1, 1, 12, tzinfo=ZoneInfo('America/Los_Angeles')),
+        'location_name': 'Fake Location',
+    }
+    defaults.update(kwargs)
+    event = Event.objects.create(**defaults)
+    if guests:
+        event.guests.add(*guests)
+    return event
+
+
 @pytest.fixture
 def event(db, guest1, guest2):
-    event = Event.objects.create(
-        name='Fake Event',
-        host1_name='Groovy',
-        host1_email='groovy@example.org',
+    event = make_event(
+        [guest1, guest2],
         invitees='Guest One guest1@example.org, Guest Two guest2@example.org',
-        start_datetime=dt.datetime(
-            2030, 1, 1, 12, tzinfo=ZoneInfo('America/Los_Angeles')
-        ),
-        location_name='Fake Location',
     )
-    event.guests.add(guest1, guest2)
-    event.save()
     yield event
     Reply.objects.filter(event=event).delete()
     event.delete()
@@ -49,18 +57,49 @@ def event(db, guest1, guest2):
 
 @pytest.fixture
 def past_event(db, guest1, guest2):
-    event = Event.objects.create(
+    event = make_event(
+        [guest1, guest2],
         name='Past Event',
-        host1_name='Groovy',
-        host1_email='groovy@example.org',
         invitees='Guest One guest1@example.org, Guest Two guest2@example.org',
-        start_datetime=dt.datetime(
-            2020, 1, 1, 12, tzinfo=ZoneInfo('America/Los_Angeles')
-        ),
-        location_name='Fake Location',
+        start_datetime=dt.datetime(2020, 1, 1, 12, tzinfo=ZoneInfo('America/Los_Angeles')),
     )
-    event.guests.add(guest1, guest2)
-    event.save()
+    yield event
+    Reply.objects.filter(event=event).delete()
+    event.delete()
+
+
+@pytest.fixture
+def same_day_event(db, guest1):
+    event = make_event(
+        [guest1],
+        name='Same Day Event',
+        end_datetime=dt.datetime(2030, 1, 1, 15, tzinfo=ZoneInfo('America/Los_Angeles')),
+    )
+    yield event
+    Reply.objects.filter(event=event).delete()
+    event.delete()
+
+
+@pytest.fixture
+def multiday_event(db, guest1):
+    event = make_event(
+        [guest1],
+        name='Multi Day Event',
+        end_datetime=dt.datetime(2030, 1, 2, 15, tzinfo=ZoneInfo('America/Los_Angeles')),
+    )
+    yield event
+    Reply.objects.filter(event=event).delete()
+    event.delete()
+
+
+@pytest.fixture
+def two_host_event(db, guest1):
+    event = make_event(
+        [guest1],
+        name='Two Host Event',
+        host2_name='Spirit',
+        host2_email='spirit@example.org',
+    )
     yield event
     Reply.objects.filter(event=event).delete()
     event.delete()

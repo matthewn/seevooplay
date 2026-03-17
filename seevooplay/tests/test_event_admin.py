@@ -1,7 +1,20 @@
 from bs4 import BeautifulSoup
 from types import SimpleNamespace
+from django.urls import reverse
 from seevooplay.admin import EventAdmin
 from seevooplay.models import Guest
+
+
+def test_process_invitees_empty_line(db):
+    # ensure empty line in invitees doesn't generate anything
+    obj = SimpleNamespace(invitees='prince@example.org,')
+    all_guests = EventAdmin.process_invitees(None, [], obj)
+    assert len(all_guests) == 1
+
+
+def test_event_get_absolute_url(event):
+    url = event.get_absolute_url()
+    assert url == reverse('invitation', kwargs={'event_id': event.id})
 
 
 def test_process_invitees(db):
@@ -67,13 +80,13 @@ def get_admin_form_data(response):
     for field in soup.find_all(['input', 'select', 'textarea']):
         name = field.get('name')
         if not name:
-            continue
+            continue  # pragma: no cover (3 branches here not used in our forms)
         if field.name == 'input':
             if field.get('type') == 'checkbox':
-                form_data[name] = field.get('checked') is not None
+                form_data[name] = field.get('checked') is not None  # pragma: no cover
             else:
                 form_data[name] = field.get('value', '')
-        elif field.name == 'select':
+        elif field.name == 'select':  # pragma: no cover
             selected = field.find('option', selected=True)
             form_data[name] = selected.get('value', '') if selected else ''
         elif field.name == 'textarea':
@@ -106,4 +119,6 @@ def test_save_model_existing(db, admin_client, mailoutbox, event, guest1, guest2
     event.refresh_from_db()
     assert event.invitees.endswith('org\r\nlarry@example.org')
     assert event.guests.all().count() == 3
-    assert guest1 and guest2 and larry in event.guests.all()
+    assert guest1 in event.guests.all()
+    assert guest2 in event.guests.all()
+    assert larry in event.guests.all()

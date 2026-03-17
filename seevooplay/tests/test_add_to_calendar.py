@@ -2,7 +2,11 @@ import datetime
 from urllib.parse import unquote
 from zoneinfo import ZoneInfo
 
-from seevooplay.templatetags.add_to_calendar import _generate_calendar_links
+from seevooplay.templatetags.add_to_calendar import (
+    _generate_calendar_links,
+    add_to_calendar,
+    add_to_calendar_simple,
+)
 
 TZ = ZoneInfo('America/Los_Angeles')
 START = datetime.datetime(2030, 6, 15, 18, 0, 0, tzinfo=TZ)
@@ -40,12 +44,24 @@ def test_with_url_includes_description():
 def test_without_url_no_description():
     result = _generate_calendar_links('Party', START, END, 'Home', '', '', '')
     ics_decoded = unquote(result['ics'])
-    assert 'DESCRIPTION:\n' in ics_decoded or 'DESCRIPTION:END' in ics_decoded or 'DESCRIPTION:\r' in ics_decoded
+    lines = ics_decoded.splitlines()
+    description_line = next(line for line in lines if line.startswith('DESCRIPTION:'))
+    assert description_line == 'DESCRIPTION:'
 
 
 def test_ics_is_data_uri():
     result = _generate_calendar_links('Party', START, END, 'Home', 'https', 'example.com', '/rsvp/1/')
     assert result['ics'].startswith('data:text/calendar;charset=utf8,')
+
+
+def test_add_to_calendar_tag_invalid_start():
+    result = add_to_calendar('Party', 'not a datetime')
+    assert result == ''
+
+
+def test_add_to_calendar_simple_tag():
+    result = add_to_calendar_simple('Party', START, END, 'Home', 'https', 'example.com', '/rsvp/1/')
+    assert set(result.keys()) == {'google', 'yahoo', 'outlook_365', 'ics'}
 
 
 def test_ics_contains_vcalendar_structure():
