@@ -1,6 +1,6 @@
 [project]
 name = "seevooplay"
-version = "1.99"
+version = "2.00"
 description = "Seevooplay is a Django app for online invitations and RSVPs."
 authors = [{ name = "Matthew Newton", email = "matthewn@mahnamahna.net" }]
 requires-python = ">=3.11, <4"
@@ -8,7 +8,7 @@ readme = "README.md"
 license = "GPL-3.0-only"
 keywords = ["django"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
     "Framework :: Django",
     "Operating System :: OS Independent",
