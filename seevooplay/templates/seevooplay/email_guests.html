@@ -1,7 +1,7 @@
 {% extends "admin/base_site.html" %}
 {% load i18n static %}
 
-{% block title %}Email guests {{ block.super }}{% endblock %}
+{% block title %}{% trans "Email guests" %} {{ block.super }}{% endblock %}
 
 {% block extrastyle %}
   {{ block.super }}
@@ -15,11 +15,11 @@
 <div class="breadcrumbs">
 <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
 &rsaquo; <a href="{% url 'admin:app_list' app_label='seevooplay' %}">Seevooplay</a>
-&rsaquo; <a href="{% url 'admin:seevooplay_event_changelist' %}">Events</a>
+&rsaquo; <a href="{% url 'admin:seevooplay_event_changelist' %}">{% trans "Events" %}</a>
 &rsaquo; <a href="{% url 'admin:seevooplay_event_change' event.id %}">{{ event.name }}
 ({{ event.start_datetime|date:"SHORT_DATE_FORMAT" }}
 {{ event.start_datetime|date:"h:i A e" }})</a>
-&rsaquo; Email guests
+&rsaquo; {% trans "Email guests" %}
 </a>
 </div>
 {% endblock %}
@@ -28,7 +28,7 @@
 {% block content %}
 <div id="content-main">
     <h2>{{ event }}</h2>
-    <h2>Email guests who:</h2>
+    <h2>{% trans "Email guests who:" %}</h2>
 
     <form method="post">
         {% csrf_token %}
@@ -36,7 +36,7 @@
             <div class="field-wrapper {{ field.html_name }}">
                 {% if field.widget_type == 'checkbox' %}
                     {% if field.name == 'want_have_viewed' %}
-                        <p><b>AND:</b></p>
+                        <p><b>{% trans "AND:" %}</b></p>
                     {% endif %}
                     {{ field.errors }}
                     {{ field }}
@@ -54,7 +54,7 @@
                 {% endif %}
             </div>
         {% endfor %}
-        <input type="submit" value="Send email">
+        <input type="submit" value="{% trans "Send email" %}">
     </form>
 
 </div>

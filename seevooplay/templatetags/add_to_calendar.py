@@ -1,5 +1,6 @@
 from django import template
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext as _
 from urllib.parse import quote
 import datetime
 
@@ -90,18 +91,25 @@ def add_to_calendar(title, start_datetime, end_datetime=None, location='', schem
     if not calendar_links:
         return ''
 
+    add_to_calendar_label = _('Add to Calendar')
+    google_label = _('Google Calendar')
+    outlook_365_label = _('Outlook 365')
+    apple_label = _('Apple Calendar')
+    outlook_desktop_label = _('Outlook (Desktop)')
+    yahoo_label = _('Yahoo Calendar')
+
     html = f"""
     <div class="add-to-calendar">
         <div class="calendar-dropdown">
             <button class="calendar-btn" onclick="toggleCalendarDropdown(this)">
-                📅 Add to Calendar
+                📅 {add_to_calendar_label}
             </button>
             <div class="calendar-options" style="display: none;">
-                <a href="{calendar_links['google']}" target="_blank" rel="noopener">Google Calendar</a>
-                <a href="{calendar_links['outlook_365']}" target="_blank" rel="noopener">Outlook 365</a>
-                <a href="{calendar_links['ics']}" download="event.ics">Apple Calendar</a>
-                <a href="{calendar_links['ics']}" download="event.ics">Outlook (Desktop)</a>
-                <a href="{calendar_links['yahoo']}" target="_blank" rel="noopener">Yahoo Calendar</a>
+                <a href="{calendar_links['google']}" target="_blank" rel="noopener">{google_label}</a>
+                <a href="{calendar_links['outlook_365']}" target="_blank" rel="noopener">{outlook_365_label}</a>
+                <a href="{calendar_links['ics']}" download="event.ics">{apple_label}</a>
+                <a href="{calendar_links['ics']}" download="event.ics">{outlook_desktop_label}</a>
+                <a href="{calendar_links['yahoo']}" target="_blank" rel="noopener">{yahoo_label}</a>
             </div>
         </div>
     </div>

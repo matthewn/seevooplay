@@ -1,11 +1,15 @@
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
+from django.utils.functional import lazy
 from django.utils.html import mark_safe
+from django.utils.translation import gettext_lazy as _
 
 from djrichtextfield.models import RichTextField
 from model_utils.models import TimeStampedModel
 from shortuuid.django_fields import ShortUUIDField
+
+mark_safe_lazy = lazy(mark_safe, str)
 
 import zoneinfo
 
@@ -16,10 +20,10 @@ class Guest(TimeStampedModel):
     name = models.CharField(max_length=64)
     email = models.EmailField(unique=True)
     short_uuid = ShortUUIDField(
-        length=16, unique=True, editable=False, verbose_name="short UUID"
+        length=16, unique=True, editable=False, verbose_name=_("short UUID")
     )
     legacy_uuid = models.UUIDField(
-        null=True, blank=True, editable=False, verbose_name="legacy UUID"
+        null=True, blank=True, editable=False, verbose_name=_("legacy UUID")
     )
 
     class Meta:
@@ -51,20 +55,20 @@ class Event(TimeStampedModel):
         Guest,
         blank=True,
         through='Reply',
-        verbose_name='Invited guests',
+        verbose_name=_('Invited guests'),
     )
     invitees = models.TextField(
         blank=True,
-        help_text=mark_safe('''
-            Enter a list of email addresses separated by commas or new lines.
-            <br>You can put full names before email addresses, and we'll try to
-            figure the whole mess out.
-            <br>Quotes and angle brackets will be ignored. Example input:
-            <pre>    prince@example.org, madonna@example.org</pre>
-            <pre>    "Rip Torn" &lt;rip_torn@example.org&gt;</pre>
-            <pre>    Tim Berners Lee tim@example.org</pre>
-            <big><b><i>New invitees will be immediately emailed!</b></i></big>
-        ''')
+        help_text=mark_safe_lazy(_(
+            'Enter a list of email addresses separated by commas or new lines.'
+            '<br>You can put full names before email addresses, and we\'ll try to'
+            ' figure the whole mess out.'
+            '<br>Quotes and angle brackets will be ignored. Example input:'
+            '<pre>    prince@example.org, madonna@example.org</pre>'
+            '<pre>    "Rip Torn" &lt;rip_torn@example.org&gt;</pre>'
+            '<pre>    Tim Berners Lee tim@example.org</pre>'
+            '<big><b><i>New invitees will be immediately emailed!</i></b></big>'
+        ))
     )
 
     def __str__(self):
@@ -75,9 +79,9 @@ class Event(TimeStampedModel):
 
 
 class ReplyStatus(models.TextChoices):
-    YES = 'Y', 'Yes'
-    NO = 'N', 'No'
-    MAYBE = 'M', 'Maybe'
+    YES = 'Y', _('Yes')
+    NO = 'N', _('No')
+    MAYBE = 'M', _('Maybe')
 
 
 class Reply(TimeStampedModel):
@@ -103,7 +107,7 @@ class Reply(TimeStampedModel):
 
     class Meta:
         ordering = ('guest',)
-        verbose_name_plural = 'Replies'
+        verbose_name_plural = _('Replies')
 
     def __str__(self):
         return f'{self.event.name}: {self.guest}: {self.status}'

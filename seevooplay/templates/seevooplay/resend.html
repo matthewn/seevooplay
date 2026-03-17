@@ -1,7 +1,7 @@
 {% extends "seevooplay/base.html" %}
 {% load i18n static %}
 
-{% block title %}resend invitations {{ block.super }}{% endblock %}
+{% block title %}{% trans "resend invitations" %} {{ block.super }}{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'seevooplay/css/event.css' %}">
@@ -12,7 +12,7 @@
 <div id="seevooplay">
 
     <div class="resend">
-        <h2>resend invitations</h2>
+        <h2>{% trans "resend invitations" %}</h2>
 
         {% if messages %}
             <ul class="messages">
@@ -34,12 +34,12 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <input type="submit" value="resend invitations for this address">
+            <input type="submit" value="{% trans "resend invitations for this address" %}">
         </form>
     </div>
 
     <footer>
-        powered by
+        {% trans "powered by" %}
         <a target="_blank" href="https://github.com/matthewn/seevooplay">Seevooplay</a>
     </footer>
 </div>

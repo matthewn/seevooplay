@@ -1,0 +1,390 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-17 11:03-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: seevooplay/admin.py:92
+#, python-format
+msgid "%(email)s is not a valid email address."
+msgstr ""
+
+#: seevooplay/admin.py:114
+#, python-format
+msgid "New invitees added for %(event_name)s: %(guest_names)s"
+msgstr ""
+
+#: seevooplay/emails.py:26 seevooplay/emails.py:51
+#, python-format
+msgid "Email sent to: %(recipients)s"
+msgstr ""
+
+#: seevooplay/emails.py:35
+#, python-format
+msgid "[invitation] %(event_name)s"
+msgstr ""
+
+#: seevooplay/emails.py:60
+#, python-format
+msgid "[RSVP] %(guest_name)s: %(status)s"
+msgstr ""
+
+#: seevooplay/forms.py:7
+msgid "your email address: "
+msgstr ""
+
+#: seevooplay/forms.py:14
+msgid "Will you attend?"
+msgstr ""
+
+#: seevooplay/forms.py:16 seevooplay/models.py:82
+#: seevooplay/templates/seevooplay/event.html:99
+msgid "Yes"
+msgstr ""
+
+#: seevooplay/forms.py:17 seevooplay/models.py:83
+#: seevooplay/templates/seevooplay/event.html:111
+msgid "No"
+msgstr ""
+
+#: seevooplay/forms.py:18 seevooplay/models.py:84
+#: seevooplay/templates/seevooplay/event.html:105
+msgid "Maybe"
+msgstr ""
+
+#: seevooplay/forms.py:26
+msgid "Comments"
+msgstr ""
+
+#: seevooplay/forms.py:35
+msgid "are coming"
+msgstr ""
+
+#: seevooplay/forms.py:40
+msgid "may be coming"
+msgstr ""
+
+#: seevooplay/forms.py:45
+msgid "are not coming"
+msgstr ""
+
+#: seevooplay/forms.py:50
+msgid "have not replied"
+msgstr ""
+
+#: seevooplay/forms.py:55
+msgid "have viewed the invite"
+msgstr ""
+
+#: seevooplay/forms.py:60
+msgid "have not viewed the invite"
+msgstr ""
+
+#: seevooplay/models.py:23
+msgid "short UUID"
+msgstr ""
+
+#: seevooplay/models.py:26
+msgid "legacy UUID"
+msgstr ""
+
+#: seevooplay/models.py:58
+msgid "Invited guests"
+msgstr ""
+
+#: seevooplay/models.py:63
+msgid ""
+"Enter a list of email addresses separated by commas or new lines.<br>You can "
+"put full names before email addresses, and we'll try to figure the whole "
+"mess out.<br>Quotes and angle brackets will be ignored. Example input:"
+"<pre>    prince@example.org, madonna@example.org</pre><pre>    \"Rip Torn\" "
+"&lt;rip_torn@example.org&gt;</pre><pre>    Tim Berners Lee tim@example.org</"
+"pre><big><b><i>New invitees will be immediately emailed!</i></b></big>"
+msgstr ""
+
+#: seevooplay/models.py:110 seevooplay/templates/seevooplay/event.html:91
+msgid "Replies"
+msgstr ""
+
+#: seevooplay/templates/admin/seevooplay/event/change_form.html:10
+msgid "Email Guests"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests.html:4
+#: seevooplay/templates/seevooplay/email_guests.html:22
+msgid "Email guests"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests.html:16
+msgid "Home"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests.html:18
+msgid "Events"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests.html:31
+msgid "Email guests who:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests.html:39
+msgid "AND:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests.html:57
+msgid "Send email"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests_email.txt:1
+#: seevooplay/templates/seevooplay/event.html:31
+#: seevooplay/templates/seevooplay/invitation_email.txt:1
+#, python-format
+msgid "Greetings, %(name)s!"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests_email.txt:3
+msgid "This message regards the following event, which you've been invited to:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests_email.txt:9
+#, python-format
+msgid "Here's an update from %(host1)s and %(host2)s:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests_email.txt:10
+#, python-format
+msgid "Here's an update from %(host1)s:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests_email.txt:16
+msgid "To view your invitation or update your RSVP, visit this page:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests_email.txt:19
+#: seevooplay/templates/seevooplay/invitation_email.txt:13
+msgid "(This link is personalized to you -- do not share!)"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/email_guests_email.txt:23
+#: seevooplay/templates/seevooplay/invitation_email.txt:17
+#: seevooplay/templates/seevooplay/reply_notification_email.txt:22
+#, python-format
+msgid "Sent by the invitation bot at %(host)s."
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:33
+#, python-format
+msgid "Greetings, admin %(username)s!"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:34
+msgid "Edit this event"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:38
+msgid ""
+"You are invited to the following event. Please <a href=\"#rsvp\">RSVP</a> "
+"below!"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:42
+msgid "Event:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:45
+msgid "Hosts:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:45
+msgid "Host:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:49
+msgid "and"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:53
+msgid "When:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:57
+msgid "Where:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:63
+msgid "Details:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:73
+msgid "RSVP"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:80
+msgid "I will bring"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:82
+msgid "people with me."
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:86
+msgid "post my reply"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:93
+#, python-format
+msgid "Yes: %(count)s"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:94
+#, python-format
+msgid "Maybe: %(count)s"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:95
+#, python-format
+msgid "No: %(count)s"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:96
+#, python-format
+msgid "No Reply: %(count)s"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:117
+msgid "No reply"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event.html:125
+#: seevooplay/templates/seevooplay/resend.html:42
+msgid "powered by"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/event_replies.html:15
+#, python-format
+msgid "last viewed at %(modified)s"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/invitation_email.txt:3
+#, python-format
+msgid "%(host1)s and %(host2)s have invited you to:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/invitation_email.txt:4
+#, python-format
+msgid "%(host1)s has invited you to:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/invitation_email.txt:9
+msgid "To see the full invitation, and to RSVP, please visit this page:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/reply_notification_email.txt:1
+msgid "Greetings, event host!"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/reply_notification_email.txt:3
+msgid "This message regards this event:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/reply_notification_email.txt:8
+#, python-format
+msgid "%(name)s has replied: %(status)s"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/reply_notification_email.txt:10
+#, python-format
+msgid "They are bringing %(extra_guests)s person with them."
+msgid_plural "They are bringing %(extra_guests)s people with them."
+msgstr[0] ""
+msgstr[1] ""
+
+#: seevooplay/templates/seevooplay/reply_notification_email.txt:12
+msgid "They also said:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/reply_notification_email.txt:16
+msgid "You can administer your event here:"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/resend.html:4
+#: seevooplay/templates/seevooplay/resend.html:15
+msgid "resend invitations"
+msgstr ""
+
+#: seevooplay/templates/seevooplay/resend.html:37
+msgid "resend invitations for this address"
+msgstr ""
+
+#: seevooplay/templatetags/add_to_calendar.py:94
+msgid "Add to Calendar"
+msgstr ""
+
+#: seevooplay/templatetags/add_to_calendar.py:95
+msgid "Google Calendar"
+msgstr ""
+
+#: seevooplay/templatetags/add_to_calendar.py:96
+msgid "Outlook 365"
+msgstr ""
+
+#: seevooplay/templatetags/add_to_calendar.py:97
+msgid "Apple Calendar"
+msgstr ""
+
+#: seevooplay/templatetags/add_to_calendar.py:98
+msgid "Outlook (Desktop)"
+msgstr ""
+
+#: seevooplay/templatetags/add_to_calendar.py:99
+msgid "Yahoo Calendar"
+msgstr ""
+
+#: seevooplay/views.py:70
+msgid "Thank you for your reply!"
+msgstr ""
+
+#: seevooplay/views.py:72
+msgid "We look forward to seeing you!"
+msgstr ""
+
+#: seevooplay/views.py:74
+msgid "We hope you can make it!"
+msgstr ""
+
+#: seevooplay/views.py:76
+msgid "We will miss you!"
+msgstr ""
+
+#: seevooplay/views.py:138
+#, python-format
+msgid "Sorry, %(email)s is not in our records."
+msgstr ""
+
+#: seevooplay/views.py:148
+#, python-format
+msgid "Hey there, %(name)s! There's email headed your way."
+msgstr ""
+
+#: seevooplay/views.py:154
+#, python-format
+msgid "Sorry, no outstanding invites for you, %(name)s."
+msgstr ""
+
+#: seevooplay/views.py:233
+msgid "No recipients selected!"
+msgstr ""

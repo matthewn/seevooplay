@@ -9,6 +9,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.formats import date_format, time_format
+from django.utils.translation import gettext as _
 from zoneinfo import ZoneInfo
 
 from .emails import send_guest_emails, send_invitations, send_reply_notifications
@@ -66,13 +67,13 @@ def event_page(request, event_id, guest_uuid=None):
                 address_list.append(event.host2_email)
             send_reply_notifications(request, guest_reply, None, address_list)
 
-            messages.add_message(request, messages.INFO, 'Thank you for your reply!')
+            messages.add_message(request, messages.INFO, _('Thank you for your reply!'))
             if guest_reply.status == 'Y':
-                messages.add_message(request, messages.INFO, 'We look forward to seeing you!')
+                messages.add_message(request, messages.INFO, _('We look forward to seeing you!'))
             if guest_reply.status == 'M':
-                messages.add_message(request, messages.INFO, 'We hope you can make it!')
+                messages.add_message(request, messages.INFO, _('We hope you can make it!'))
             if guest_reply.status == 'N':
-                messages.add_message(request, messages.INFO, 'We will miss you!')
+                messages.add_message(request, messages.INFO, _('We will miss you!'))
     else:
         if guest:
             form = ReplyForm(
@@ -134,7 +135,7 @@ def resend_page(request):
             messages.add_message(
                 request,
                 messages.ERROR,
-                f'Sorry, {email} is not in our records.',
+                _('Sorry, %(email)s is not in our records.') % {'email': email},
             )
         if guest:
             invites = Reply.objects.filter(
@@ -144,13 +145,13 @@ def resend_page(request):
                 messages.add_message(
                     request,
                     messages.INFO,
-                    f'Hey there, {guest.name}! There\'s email headed your way.',
+                    _("Hey there, %(name)s! There's email headed your way.") % {'name': guest.name},
                 )
             else:
                 messages.add_message(
                     request,
                     messages.INFO,
-                    f'Sorry, no outstanding invites for you, {guest.name}.',
+                    _('Sorry, no outstanding invites for you, %(name)s.') % {'name': guest.name},
                 )
             for invite in invites:
                 send_invitations(
@@ -229,7 +230,7 @@ def email_guests(request, event_id):
                     reverse('admin:seevooplay_event_change', args=(event_id,))
                 )
             else:
-                messages.add_message(request, messages.ERROR, 'No recipients selected!')
+                messages.add_message(request, messages.ERROR, _('No recipients selected!'))
 
     # if a GET (or any other method) we'll create a blank form
     else:

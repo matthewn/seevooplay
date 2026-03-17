@@ -1,3 +1,4 @@
+{% load i18n %}
 <ul>
     {% for reply in replies %}
         <li>
@@ -11,7 +12,7 @@
                 <div class="comment">{{ reply.comment }}</div>
             {% endif %}
             {% if reply.has_viewed and request.user.is_staff %}
-                <div class="spy">last viewed at {{ reply.modified }}</div>
+                <div class="spy">{% blocktrans with modified=reply.modified %}last viewed at {{ modified }}{% endblocktrans %}</div>
             {% endif %}
         </li>
     {% endfor %}

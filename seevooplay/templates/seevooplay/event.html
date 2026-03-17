@@ -28,39 +28,39 @@
 
     <p class="greeting">
         {% if guest %}
-            Greetings, {{ guest.name }}!
+            {% blocktrans with name=guest.name %}Greetings, {{ name }}!{% endblocktrans %}
         {% else %}
-            Greetings, admin {{ request.user.username }}!
-            <a class="admin-link" href="{% url 'admin:seevooplay_event_change' event.id %}">Edit this event</a>
+            {% blocktrans with username=request.user.username %}Greetings, admin {{ username }}!{% endblocktrans %}
+            <a class="admin-link" href="{% url 'admin:seevooplay_event_change' event.id %}">{% trans "Edit this event" %}</a>
         {% endif %}
     </p>
     <p>
-        You are invited to the following event. Please <a href="#rsvp">RSVP</a> below!
+        {% blocktrans %}You are invited to the following event. Please <a href="#rsvp">RSVP</a> below!{% endblocktrans %}
     </p>
 
     <table class="event-details">
-        <tr><td>Event:</td><td>{{ event.name }}</td></tr>
+        <tr><td>{% trans "Event:" %}</td><td>{{ event.name }}</td></tr>
         <tr>
             <td>
-                {% if event.host2_name %}Hosts:{% else %}Host:{% endif %}
+                {% if event.host2_name %}{% trans "Hosts:" %}{% else %}{% trans "Host:" %}{% endif %}
             </td>
             <td>
                 {% if event.host1_email %}<a href="mailto:{{ event.host1_email }}">{% endif %}{{ event.host1_name }}{% if event.host1_email %}</a>{% endif %}
-                {% if event.host2_name %}and {% if event.host2_email %}<a href="mailto:{{ event.host2_email }}">{% endif %}{{ event.host2_name }}{% if event.host2_email %}</a>{% endif %}{% endif %}
+                {% if event.host2_name %}{% trans "and" %} {% if event.host2_email %}<a href="mailto:{{ event.host2_email }}">{% endif %}{{ event.host2_name }}{% if event.host2_email %}</a>{% endif %}{% endif %}
             </td>
         </tr>
         <tr>
-            <td>When:</td>
+            <td>{% trans "When:" %}</td>
             <td>{{ date_display }}</td>
         </tr>
         <tr>
-            <td>Where:</td>
+            <td>{% trans "Where:" %}</td>
             <td>
                 {{ event.location_name }}<br>
                 <a target="_blank" href="https://duckduckgo.com/?q={{ event.location_address|urlencode }}&iaxm=maps">{{ event.location_address }}</a>
             </td>
         </tr>
-        <tr><td>Details:</td><td>{{ event.details|safe }}</td></tr>
+        <tr><td>{% trans "Details:" %}</td><td>{{ event.details|safe }}</td></tr>
     </table>
 
     <div style="text-align: center;">
@@ -70,51 +70,51 @@
 
     <div class="bottom-container">
         <div id="rsvp" class="reply-form">
-            <h2>RSVP</h2>
+            <h2>{% trans "RSVP" %}</h2>
             <form method="post">
                 {% csrf_token %}
                 {% for field in form %}
                     <div class="field-wrapper {{ field.html_name }}">
                         {{ field.errors }}
                         {% if field.name != 'extra_guests' %}<label for="{{ field.id_for_label }}">{{ field.label }}</label>{% endif %}
-                        {% if field.name == 'extra_guests' %}I will bring {% endif %}
+                        {% if field.name == 'extra_guests' %}{% trans "I will bring" %} {% endif %}
                         {{ field }}
-                        {% if field.name == 'extra_guests' %} people with me.{% endif %}
+                        {% if field.name == 'extra_guests' %} {% trans "people with me." %}{% endif %}
                         {% if field.help_text %}<p class="help">{{ field.help_text|safe }}</p>{% endif %}
                     </div>
                 {% endfor %}
-                <input type="submit" value="post my reply">
+                <input type="submit" value="{% trans "post my reply" %}">
             </form>
         </div>
 
         <div class="replies">
-            <h2>Replies</h2>
+            <h2>{% trans "Replies" %}</h2>
             <div class="replycount">
-                <div class="yes">Yes: {{ yes_replies_count }}</div>
-                <div class="maybe">Maybe: {{ maybe_replies_count }}</div>
-                <div class="no">No: {{ no_replies.count }}</div>
-                <div class="none">No Reply: {{ none_replies.count }}</div>
+                <div class="yes">{% blocktrans with count=yes_replies_count %}Yes: {{ count }}{% endblocktrans %}</div>
+                <div class="maybe">{% blocktrans with count=maybe_replies_count %}Maybe: {{ count }}{% endblocktrans %}</div>
+                <div class="no">{% blocktrans with count=no_replies.count %}No: {{ count }}{% endblocktrans %}</div>
+                <div class="none">{% blocktrans with count=none_replies.count %}No Reply: {{ count }}{% endblocktrans %}</div>
             </div>
             {% if yes_replies_count > 0 %}
-                <h3 class="yes">Yes</h3>
+                <h3 class="yes">{% trans "Yes" %}</h3>
                 {% with yes_replies as replies %}
                     {% include 'seevooplay/event_replies.html' %}
                 {% endwith %}
             {% endif %}
             {% if maybe_replies_count > 0 %}
-                <h3 class="maybe">Maybe</h3>
+                <h3 class="maybe">{% trans "Maybe" %}</h3>
                 {% with maybe_replies as replies %}
                     {% include 'seevooplay/event_replies.html' %}
                 {% endwith %}
             {% endif %}
             {% if no_replies.count > 0 %}
-                <h3 class="no">No</h3>
+                <h3 class="no">{% trans "No" %}</h3>
                 {% with no_replies as replies %}
                     {% include 'seevooplay/event_replies.html' %}
                 {% endwith %}
             {% endif %}
             {% if none_replies.count > 0 %}
-                <h3>No reply</h3>
+                <h3>{% trans "No reply" %}</h3>
                 {% with none_replies as replies %}
                     {% include 'seevooplay/event_replies.html' %}
                 {% endwith %}
@@ -122,7 +122,7 @@
         </div>
     </div>
     <footer>
-        powered by
+        {% trans "powered by" %}
         <a target="_blank" href="https://github.com/matthewn/seevooplay">Seevooplay</a>
     </footer>
 </div>

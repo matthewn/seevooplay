@@ -2,6 +2,7 @@ from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.urls import path
+from django.utils.translation import gettext as _, gettext_lazy as _lazy
 
 from .emails import send_invitations
 from .models import (
@@ -19,7 +20,7 @@ class StatusesInline(admin.TabularInline):
     """
     model = Reply
     extra = 0
-    verbose_name_plural = 'Invitations & Responses'
+    verbose_name_plural = _lazy('Invitations & Responses')
 
     class Media:
         css = {'all': ('seevooplay/css/admin.css',)}
@@ -88,7 +89,7 @@ class EventAdmin(admin.ModelAdmin):
                 messages.add_message(
                     request,
                     messages.ERROR,
-                    f'{email} is not a valid email address.',
+                    _('%(email)s is not a valid email address.') % {'email': email},
                 )
         return all_guests
 
@@ -110,7 +111,10 @@ class EventAdmin(admin.ModelAdmin):
             messages.add_message(
                 request,
                 messages.INFO,
-                f'New invitees added for {obj.name}: {new_guests_dsp}',
+                _('New invitees added for %(event_name)s: %(guest_names)s') % {
+                    'event_name': obj.name,
+                    'guest_names': new_guests_dsp,
+                },
             )
             send_invitations(request, obj, None, new_guests)
 

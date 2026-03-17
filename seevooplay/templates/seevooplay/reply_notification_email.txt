@@ -1,24 +1,24 @@
-Greetings, event host!
+{% load i18n %}{% trans "Greetings, event host!" %}
 
-This message regards this event:
+{% trans "This message regards this event:" %}
 
 {{ reply.event.name }}
 {{ reply.event.start_datetime }}
 
-{{ reply.guest.name }} has replied: {{ status }}
+{% blocktrans with name=reply.guest.name status=status %}{{ name }} has replied: {{ status }}{% endblocktrans %}
 
-{% if reply.extra_guests %}They are bringing {{ reply.extra_guests }} people with them.{% endif %}
+{% if reply.extra_guests %}{% blocktrans count extra_guests=reply.extra_guests %}They are bringing {{ extra_guests }} person with them.{% plural %}They are bringing {{ extra_guests }} people with them.{% endblocktrans %}{% endif %}
 
-{% if reply.comment %}They also said:
+{% if reply.comment %}{% trans "They also said:" %}
 
 {{ reply.comment }}{% endif %}
 
-You can administer your event here:
+{% trans "You can administer your event here:" %}
 
 {{ protocol }}://{{ host }}{{ link }}
 
 
 --
-Sent by the invitation bot at {{ host }}.
+{% blocktrans with host=host %}Sent by the invitation bot at {{ host }}.{% endblocktrans %}
 
 

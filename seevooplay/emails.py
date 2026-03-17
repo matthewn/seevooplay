@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
 from .models import ReplyStatus
 
@@ -22,7 +23,7 @@ def send_guest_emails(request, event, subject, message, from_email, guest_list):
         body = template.render(context)
         send_mail(subject, body, from_email, (guest.email,))
     recipients = ', '.join([g.email for g in guest_list])
-    messages.add_message(request, messages.INFO, f'Email sent to: {recipients}')
+    messages.add_message(request, messages.INFO, _('Email sent to: %(recipients)s') % {'recipients': recipients})
 
 
 def send_invitations(request, event, from_email, guest_list, quiet=False):
@@ -31,7 +32,7 @@ def send_invitations(request, event, from_email, guest_list, quiet=False):
     This is triggered by the save_model() method in EventAdmin.
     Also triggered by views.resend_page().
     """
-    subject = f'[invitation] {event.name}'
+    subject = _('[invitation] %(event_name)s') % {'event_name': event.name}
     template = get_template('seevooplay/invitation_email.txt')
     for guest in guest_list:
         context = {
@@ -47,7 +48,7 @@ def send_invitations(request, event, from_email, guest_list, quiet=False):
         messages.add_message(
             request,
             messages.INFO,
-            f'Email sent to: {recipients}'
+            _('Email sent to: %(recipients)s') % {'recipients': recipients},
         )
 
 
@@ -56,7 +57,10 @@ def send_reply_notifications(request, reply, from_email, address_list):
     Send reply notifications to host(s).
     This is triggered on POST for the event_page view.
     """
-    subject = f'[RSVP] {reply.guest.name}: {reply.status}'
+    subject = _('[RSVP] %(guest_name)s: %(status)s') % {
+        'guest_name': reply.guest.name,
+        'status': reply.status,
+    }
     template = get_template('seevooplay/reply_notification_email.txt')
     for address in address_list:
         context = {

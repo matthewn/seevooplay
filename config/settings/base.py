@@ -77,6 +77,7 @@ AUTH_PASSWORD_VALIDATORS = [
 USE_TZ = True
 USE_I18N = True
 LANGUAGE_CODE = 'en'
+LOCALE_PATHS = [BASE_DIR / 'locale']
 FORMAT_MODULE_PATH = ['config.settings.formats',]
 
 # Static files (CSS, JavaScript, Images)

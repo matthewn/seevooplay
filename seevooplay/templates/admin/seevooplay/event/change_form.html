@@ -7,7 +7,7 @@
 
     {# THIS <li> IS OUR ONLY ALTERATION TO THIS TEMPLATE #}
     <li>
-        <a href="{% url 'admin:seevooplay_email_guests' event_id=object_id %}">Email Guests</a>
+        <a href="{% url 'admin:seevooplay_email_guests' event_id=object_id %}">{% trans "Email Guests" %}</a>
     </li>
 
     {% block object-tools-items %}

@@ -1,20 +1,21 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 
 class ResendForm(forms.Form):
     email = forms.EmailField(
-        label='your email address: ',
+        label=_('your email address: '),
         required=True,
     )
 
 
 class ReplyForm(forms.Form):
     status = forms.ChoiceField(
-        label='Will you attend?',
+        label=_('Will you attend?'),
         choices=(
-            ('Y', 'Yes'),
-            ('N', 'No'),
-            ('M', 'Maybe'),
+            ('Y', _('Yes')),
+            ('N', _('No')),
+            ('M', _('Maybe')),
         ),
         widget=forms.RadioSelect,
     )
@@ -22,7 +23,7 @@ class ReplyForm(forms.Form):
         widget=forms.TextInput,
     )
     comment = forms.CharField(
-        label='Comments',
+        label=_('Comments'),
         widget=forms.Textarea,
         required=False,
     )
@@ -31,32 +32,32 @@ class ReplyForm(forms.Form):
 class EmailGuestsForm(forms.Form):
     want_reply_yes = forms.BooleanField(
         initial=True,
-        label='are coming',
+        label=_('are coming'),
         required=False,
     )
     want_reply_maybe = forms.BooleanField(
         initial=True,
-        label='may be coming',
+        label=_('may be coming'),
         required=False,
     )
     want_reply_no = forms.BooleanField(
         initial=True,
-        label='are not coming',
+        label=_('are not coming'),
         required=False,
     )
     want_reply_none = forms.BooleanField(
         initial=True,
-        label='have not replied',
+        label=_('have not replied'),
         required=False,
     )
     want_have_viewed = forms.BooleanField(
         initial=True,
-        label='have viewed the invite',
+        label=_('have viewed the invite'),
         required=False,
     )
     want_have_not_viewed = forms.BooleanField(
         initial=True,
-        label='have not viewed the invite',
+        label=_('have not viewed the invite'),
         required=False,
     )
     subject = forms.CharField()
