@@ -50,3 +50,22 @@ DJANGO_SETTINGS_MODULE = "config.settings"
 omit = [
     "*/migrations/*",
 ]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py{311,312,313,314}-django{52,60}
+
+[testenv]
+package = editable
+deps =
+    django52: Django>=5.2,<6
+    django60: Django>=6,<7
+    pytest
+    pytest-django
+    pytest-cov
+    pytest-randomly
+    beautifulsoup4
+    Werkzeug
+commands = pytest {posargs}
+"""
