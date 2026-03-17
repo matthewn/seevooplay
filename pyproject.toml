@@ -30,8 +30,10 @@ Repository = "https://github.com/matthewn/seevooplay"
 [dependency-groups]
 dev = [
     "beautifulsoup4>=4.13.4",
+    "coverage>=7.13.5",
     "django-debugtools",
     "pytest>=8.3.5",
+    "pytest-cov>=7.0.0",
     "pytest-django>=4.11.1",
     "pytest-randomly>=3.15.0",
     "Werkzeug",
