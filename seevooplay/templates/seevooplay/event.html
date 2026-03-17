@@ -79,7 +79,7 @@
                         {% if field.name != 'extra_guests' %}<label for="{{ field.id_for_label }}">{{ field.label }}</label>{% endif %}
                         {% if field.name == 'extra_guests' %}{% trans "I will bring" %} {% endif %}
                         {{ field }}
-                        {% if field.name == 'extra_guests' %} {% trans "people with me." %}{% endif %}
+                        {% if field.name == 'extra_guests' %} {% trans "additional guest(s) with me." %}{% endif %}
                         {% if field.help_text %}<p class="help">{{ field.help_text|safe }}</p>{% endif %}
                     </div>
                 {% endfor %}

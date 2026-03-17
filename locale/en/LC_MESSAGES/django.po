@@ -1,18 +1,17 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Seevooplay translation file.
+# Copyright (C) 2026 Matthew Newton
+# This file is distributed under the same license as the Seevooplay package.
+# Matthew Newton <matthewn@mahnamahna.net>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Seevooplay 2.00\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 11:03-0700\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2026-03-17 16:35-0700\n"
+"PO-Revision-Date: 2026-03-17 16:18-0700\n"
+"Last-Translator: Matthew Newton <matthewn@mahnamahna.net>\n"
+"Language-Team: English <matthewn@mahnamahna.net>\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -238,7 +237,7 @@ msgid "I will bring"
 msgstr ""
 
 #: seevooplay/templates/seevooplay/event.html:82
-msgid "people with me."
+msgid "additional guest(s) with me."
 msgstr ""
 
 #: seevooplay/templates/seevooplay/event.html:86
