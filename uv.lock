@@ -472,12 +472,11 @@ wheels = [
 
 [[package]]
 name = "seevooplay"
-version = "1.99"
+version = "2.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "django", version = "5.2.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "django", version = "6.0.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-    { name = "django-extensions" },
     { name = "django-model-utils" },
     { name = "django-richtextfield" },
     { name = "pillow" },
@@ -489,6 +488,7 @@ dev = [
     { name = "beautifulsoup4" },
     { name = "coverage" },
     { name = "django-debugtools" },
+    { name = "django-extensions" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-django" },
@@ -499,10 +499,9 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = ">=5.2" },
-    { name = "django-extensions" },
-    { name = "django-model-utils" },
-    { name = "django-richtextfield" },
-    { name = "pillow" },
+    { name = "django-model-utils", specifier = ">=5.0.0" },
+    { name = "django-richtextfield", specifier = ">=1.6.2" },
+    { name = "pillow", specifier = ">=12.1.1" },
     { name = "shortuuid", specifier = ">=1.0.13" },
 ]
 
@@ -511,6 +510,7 @@ dev = [
     { name = "beautifulsoup4", specifier = ">=4.13.4" },
     { name = "coverage", specifier = ">=7.13.5" },
     { name = "django-debugtools" },
+    { name = "django-extensions" },
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "pytest-django", specifier = ">=4.11.1" },

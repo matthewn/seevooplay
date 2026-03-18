@@ -18,7 +18,6 @@ INSTALLED_APPS = [
     'config.apps.CustomAdminConfig',  # replaces django.contrib.admin
 
     'djrichtextfield',  # REQUIRED! rich text field for event admin
-    'django_extensions',
 ]
 
 MIDDLEWARE = [
