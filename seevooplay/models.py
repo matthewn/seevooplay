@@ -9,11 +9,11 @@ from djrichtextfield.models import RichTextField
 from model_utils.models import TimeStampedModel
 from shortuuid.django_fields import ShortUUIDField
 
-mark_safe_lazy = lazy(mark_safe, str)
-
 import zoneinfo
 
 TZ = zoneinfo.ZoneInfo(settings.TIME_ZONE)
+
+mark_safe_lazy = lazy(mark_safe, str)
 
 
 class Guest(TimeStampedModel):
