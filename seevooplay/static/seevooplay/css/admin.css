@@ -3,14 +3,12 @@ tr.dynamic-reply_set > td:first-child > p {
 }
 
 .inline-group .tabular tr.has_original td {
-  padding-top: 1em;
+  padding-top: 8px;
 }
 
-.form-row .fieldBox {
-  width: 620px;
-}
 .trumbowyg-box,
 .trumbowyg-editor {
+  max-width: 623px;
   min-height: unset;
 }
 

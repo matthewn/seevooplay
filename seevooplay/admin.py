@@ -41,10 +41,10 @@ class EventAdmin(admin.ModelAdmin):
         'name',
         ('host1_name', 'host1_email'),
         ('host2_name', 'host2_email'),
-        ('start_datetime', 'end_datetime'),
         ('location_name', 'location_address'),
-        'details',
-        'image',
+        'start_datetime',
+        'end_datetime',
+        ('details', 'image'),
         'invitees',
     )
     inlines = (StatusesInline,)
