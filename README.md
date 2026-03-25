@@ -44,7 +44,7 @@ uv run ./manage.py collectstatic
 ```
 4. Now do `uv run ./manage.py sendtestemail` to ensure your setup can send mail.
 5. Now `uv run ./manage.py createsuperuser` will walk you through creating a superuser.
-6. Fire up the Django development server with `uv run ./manage.py runserver` if you are test-driving Seevooplay. In production, you'll want to put your webserver of choice in front of the project. ([Do not](https://docs.djangoproject.com/en/5.2/ref/django-admin/#runserver) run the development server in production!)
+6. Fire up the Django development server with `uv run ./manage.py runserver` if you are test-driving Seevooplay. In production, [do not](https://docs.djangoproject.com/en/5.2/ref/django-admin/#runserver) use the development server. Instead, serve the app with gunicorn (included) behind a reverse proxy like nginx or caddy: `uv run gunicorn config.wsgi`.
 7. In your browser, navigate to http://yourdomain/admin and log in with your superuser credentials to poke around and create your first event in Seevooplay. As long as you remain logged in, you can view your first event at http://yourdomain/rsvp/1.
 
 ## Integrate with an existing Django project

@@ -16,11 +16,12 @@ classifiers = [
 ]
 dependencies = [
     "Django>=5.2",
-    "django-extensions",
     "django-model-utils>=5.0.0",
     "django-richtextfield>=1.6.2",
+    "gunicorn>=25.2.0",
     "Pillow>=12.1.1",
     "shortuuid>=1.0.13",
+    "whitenoise>=6.12.0",
 ]
 
 [project.urls]
@@ -32,6 +33,7 @@ dev = [
     "beautifulsoup4>=4.13.4",
     "coverage>=7.13.5",
     "django-debugtools",
+    "django-extensions",
     "pytest>=8.3.5",
     "pytest-cov>=7.0.0",
     "pytest-django>=4.11.1",
