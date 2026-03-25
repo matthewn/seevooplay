@@ -8,8 +8,8 @@ tr.dynamic-reply_set > td:first-child > p {
 
 .trumbowyg-box,
 .trumbowyg-editor {
-  max-width: 623px;
   min-height: unset;
+  width: 622px;
 }
 
 .form-row .datetime input.vDateField {
