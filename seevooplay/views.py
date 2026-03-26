@@ -139,8 +139,10 @@ def resend_page(request):
             )
         if guest:
             invites = Reply.objects.filter(
-                guest__email=email
-            ).filter(event__start_datetime__gt=timezone.now())
+                guest__email=email,
+                event__start_datetime__gt=timezone.now(),
+                invitation_sent=True,
+            )
             if invites.exists():
                 messages.add_message(
                     request,

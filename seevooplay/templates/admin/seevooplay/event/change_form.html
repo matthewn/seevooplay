@@ -3,16 +3,28 @@
 
 {% block object-tools %}
 {% if change %}{% if not is_popup %}
-  <ul class="object-tools">
 
-    {# THIS <li> IS OUR ONLY ALTERATION TO THIS TEMPLATE #}
+  <ul class="object-tools">
     <li>
         <a href="{% url 'admin:seevooplay_email_guests' event_id=object_id %}">{% trans "Email Guests" %}</a>
     </li>
-
     {% block object-tools-items %}
       {% change_form_object_tools %}
     {% endblock %}
   </ul>
+
+  {% if pending_replies %}
+  <form method="post">
+    {% csrf_token %}
+    <p>
+      <b>{% trans "Invitations pending for:" %}</b>
+      {% for reply in pending_replies %}{{ reply.guest.email }}{% if not forloop.last %}, {% endif %}{% endfor %}
+      <input type="hidden" name="_send_invitations" value="1">
+      <input type="submit" value="{% trans "Send invitations" %}" style="display: block; margin: 1rem 0;">
+    </p>
+    <hr style="margin: 3rem 0;">
+  </form>
+  {% endif %}
+
 {% endif %}{% endif %}
 {% endblock %}

@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from types import SimpleNamespace
 from django.urls import reverse
 from seevooplay.admin import EventAdmin
-from seevooplay.models import Guest
+from seevooplay.models import Guest, Reply
 
 
 def test_process_invitees_empty_line(db):
@@ -48,6 +48,8 @@ def test_process_invitees_invalid_email(monkeypatch):
 
 
 def test_save_model_new(db, admin_client, mailoutbox):
+    # saving a new event with invitees redirects to the change form
+    # with pending guests listed and no emails sent yet
     response = admin_client.post(
         '/admin/seevooplay/event/add/',
         {
@@ -65,16 +67,23 @@ def test_save_model_new(db, admin_client, mailoutbox):
         },
     )
 
-    assert len(mailoutbox) == 2
-    assert response.status_code == 302  # should redirect after successful save
-    response = admin_client.get(response.url)  # fetch content of page we got redirected to
-    assert 'was added successfully' in response.content.decode()
-    assert 'New invitees added for My Event: larry, moe' in response.content.decode()
+    assert len(mailoutbox) == 0
+    assert response.status_code == 302
+    change_url = response.url
+    assert '/change/' in change_url
+
+    response = admin_client.get(change_url)
+    assert response.status_code == 200
+    content = response.content.decode()
+    assert 'larry' in content
+    assert 'moe' in content
     assert Guest.objects.count() == 2
 
 
 def get_admin_form_data(response):
-    """Extract all form field values from a Django admin response."""
+    """
+    Extract all form field values from a Django admin response.
+    """
     soup = BeautifulSoup(response.content, 'html.parser')
     form_data = {}
     for field in soup.find_all(['input', 'select', 'textarea']):
@@ -82,7 +91,9 @@ def get_admin_form_data(response):
         if not name:
             continue  # pragma: no cover (3 branches here not used in our forms)
         if field.name == 'input':
-            if field.get('type') == 'checkbox':
+            if field.get('type') == 'submit':
+                continue
+            elif field.get('type') == 'checkbox':
                 form_data[name] = field.get('checked') is not None  # pragma: no cover
             else:
                 form_data[name] = field.get('value', '')
@@ -95,30 +106,47 @@ def get_admin_form_data(response):
 
 
 def test_save_model_existing(db, admin_client, mailoutbox, event, guest1, guest2):
-    # GET the change form to get current field values
+    # saving an existing event with a new invitee redirects to the change form
+    # with the new guest listed as pending and no email sent yet
     response = admin_client.get(f'/admin/seevooplay/event/{event.pk}/change/')
-    assert response.status_code == 200
     assert event.guests.all().count() == 2
     form_data = get_admin_form_data(response)
 
-    # add to invitees field and submit
-    existing_invitees = form_data.get('invitees', '')
-    form_data['invitees'] = existing_invitees + '\r\nlarry@example.org'
+    form_data['invitees'] = form_data.get('invitees', '') + '\r\nlarry@example.org'
     form_data['_save'] = 'Save'
     response = admin_client.post(
         f'/admin/seevooplay/event/{event.pk}/change/',
         form_data,
     )
 
-    # check the results
-    assert len(mailoutbox) == 1
-    assert response.status_code == 302  # redirect after successful save
-    response = admin_client.get(response.url)  # fetch content of page we got redirected to
-    assert 'New invitees added for Fake Event: larry' in response.content.decode()
-    larry = Guest.objects.get(name='larry')
+    assert len(mailoutbox) == 0
+    assert response.status_code == 302
+    assert '/change/' in response.url
+
+    response = admin_client.get(response.url)
+    assert 'larry' in response.content.decode()
+
     event.refresh_from_db()
     assert event.invitees.endswith('org\r\nlarry@example.org')
     assert event.guests.all().count() == 3
     assert guest1 in event.guests.all()
     assert guest2 in event.guests.all()
-    assert larry in event.guests.all()
+    assert Guest.objects.filter(name='larry').exists()
+
+
+def test_send_invitations(db, admin_client, mailoutbox, event, guest1):
+    # mark one guest's invitation as pending
+    Reply.objects.filter(event=event, guest=guest1).update(invitation_sent=False)
+
+    change_url = f'/admin/seevooplay/event/{event.pk}/change/'
+    response = admin_client.post(change_url, {'_send_invitations': '1'})
+
+    assert len(mailoutbox) == 1
+    assert response.status_code == 302
+    assert Reply.objects.get(event=event, guest=guest1).invitation_sent is True
+
+    # re-saving when no invitations are pending goes to the changelist, not back here
+    form_data = get_admin_form_data(admin_client.get(change_url))
+    form_data['_save'] = 'Save'
+    response = admin_client.post(change_url, form_data)
+    assert response.url == '/admin/seevooplay/event/'

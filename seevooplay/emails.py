@@ -4,7 +4,7 @@ from django.template.loader import get_template
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from .models import ReplyStatus
+from .models import Reply, ReplyStatus
 
 
 def send_guest_emails(request, event, subject, message, from_email, guest_list):
@@ -29,7 +29,7 @@ def send_guest_emails(request, event, subject, message, from_email, guest_list):
 def send_invitations(request, event, from_email, guest_list, quiet=False):
     """
     Send invitation emails.
-    This is triggered by the save_model() method in EventAdmin.
+    This is triggered by the 'Send invitations' button in EventAdmin.
     Also triggered by views.resend_page().
     """
     subject = _('[invitation] %(event_name)s') % {'event_name': event.name}
@@ -43,6 +43,7 @@ def send_invitations(request, event, from_email, guest_list, quiet=False):
         }
         body = template.render(context)
         send_mail(subject, body, from_email, (guest.email,))
+        Reply.objects.filter(event=event, guest=guest).update(invitation_sent=True)
     recipients = ', '.join([g.email for g in guest_list])
     if quiet is False:
         messages.add_message(

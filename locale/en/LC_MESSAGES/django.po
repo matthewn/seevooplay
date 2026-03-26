@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seevooplay 2.00\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 16:35-0700\n"
+"POT-Creation-Date: 2026-03-26 12:51-0700\n"
 "PO-Revision-Date: 2026-03-17 16:18-0700\n"
 "Last-Translator: Matthew Newton <matthewn@mahnamahna.net>\n"
 "Language-Team: English <matthewn@mahnamahna.net>\n"
@@ -17,17 +17,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: seevooplay/admin.py:92
+#: seevooplay/admin.py:93
 #, python-format
 msgid "%(email)s is not a valid email address."
 msgstr ""
 
-#: seevooplay/admin.py:114
-#, python-format
-msgid "New invitees added for %(event_name)s: %(guest_names)s"
-msgstr ""
-
-#: seevooplay/emails.py:26 seevooplay/emails.py:51
+#: seevooplay/emails.py:26 seevooplay/emails.py:52
 #, python-format
 msgid "Email sent to: %(recipients)s"
 msgstr ""
@@ -37,7 +32,7 @@ msgstr ""
 msgid "[invitation] %(event_name)s"
 msgstr ""
 
-#: seevooplay/emails.py:60
+#: seevooplay/emails.py:61
 #, python-format
 msgid "[RSVP] %(guest_name)s: %(status)s"
 msgstr ""
@@ -50,17 +45,17 @@ msgstr ""
 msgid "Will you attend?"
 msgstr ""
 
-#: seevooplay/forms.py:16 seevooplay/models.py:82
+#: seevooplay/forms.py:16 seevooplay/models.py:81
 #: seevooplay/templates/seevooplay/event.html:99
 msgid "Yes"
 msgstr ""
 
-#: seevooplay/forms.py:17 seevooplay/models.py:83
+#: seevooplay/forms.py:17 seevooplay/models.py:82
 #: seevooplay/templates/seevooplay/event.html:111
 msgid "No"
 msgstr ""
 
-#: seevooplay/forms.py:18 seevooplay/models.py:84
+#: seevooplay/forms.py:18 seevooplay/models.py:83
 #: seevooplay/templates/seevooplay/event.html:105
 msgid "Maybe"
 msgstr ""
@@ -112,7 +107,7 @@ msgid ""
 "mess out.<br>Quotes and angle brackets will be ignored. Example input:"
 "<pre>    prince@example.org, madonna@example.org</pre><pre>    \"Rip Torn\" "
 "&lt;rip_torn@example.org&gt;</pre><pre>    Tim Berners Lee tim@example.org</"
-"pre><big><b><i>New invitees will be immediately emailed!</i></b></big>"
+"pre>"
 msgstr ""
 
 #: seevooplay/models.py:110 seevooplay/templates/seevooplay/event.html:91
@@ -121,6 +116,14 @@ msgstr ""
 
 #: seevooplay/templates/admin/seevooplay/event/change_form.html:10
 msgid "Email Guests"
+msgstr ""
+
+#: seevooplay/templates/admin/seevooplay/event/change_form.html:22
+msgid "Invitations pending for:"
+msgstr ""
+
+#: seevooplay/templates/admin/seevooplay/event/change_form.html:25
+msgid "Send invitations"
 msgstr ""
 
 #: seevooplay/templates/seevooplay/email_guests.html:4
@@ -374,16 +377,16 @@ msgstr ""
 msgid "Sorry, %(email)s is not in our records."
 msgstr ""
 
-#: seevooplay/views.py:148
+#: seevooplay/views.py:150
 #, python-format
 msgid "Hey there, %(name)s! There's email headed your way."
 msgstr ""
 
-#: seevooplay/views.py:154
+#: seevooplay/views.py:156
 #, python-format
 msgid "Sorry, no outstanding invites for you, %(name)s."
 msgstr ""
 
-#: seevooplay/views.py:233
+#: seevooplay/views.py:235
 msgid "No recipients selected!"
 msgstr ""

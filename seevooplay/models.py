@@ -67,7 +67,6 @@ class Event(TimeStampedModel):
             '<pre>    prince@example.org, madonna@example.org</pre>'
             '<pre>    "Rip Torn" &lt;rip_torn@example.org&gt;</pre>'
             '<pre>    Tim Berners Lee tim@example.org</pre>'
-            '<big><b><i>New invitees will be immediately emailed!</i></b></big>'
         ))
     )
 
@@ -93,6 +92,7 @@ class Reply(TimeStampedModel):
         Guest,
         on_delete=models.CASCADE,
     )
+    invitation_sent = models.BooleanField(default=False)
     has_viewed = models.BooleanField(default=False)
     status = models.CharField(
         blank=True,

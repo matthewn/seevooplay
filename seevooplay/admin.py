@@ -1,7 +1,8 @@
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
-from django.urls import path
+from django.http import HttpResponseRedirect
+from django.urls import path, reverse
 from django.utils.translation import gettext as _, gettext_lazy as _lazy
 
 from .emails import send_invitations
@@ -95,28 +96,50 @@ class EventAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         """
-        Process 'invitees' field and send email invitations to newly-added guests.
+        Process 'invitees' field on save.
         """
         all_guests = self.process_invitees(request, obj)
-        new_guests = []
-        for guest in all_guests:
-            if obj._state.adding or guest not in obj.guests.all():
-                new_guests.append(guest)
-
         super().save_model(request, obj, form, change)
         obj.guests.set(all_guests)
 
-        if new_guests:
-            new_guests_dsp = ', '.join([g.name for g in new_guests])
-            messages.add_message(
-                request,
-                messages.INFO,
-                _('New invitees added for %(event_name)s: %(guest_names)s') % {
-                    'event_name': obj.name,
-                    'guest_names': new_guests_dsp,
-                },
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        obj = self.get_object(request, object_id)
+        if obj and request.method == 'POST' and '_send_invitations' in request.POST:
+            # 'Send invitations' has been clicked
+            pending = obj.reply_set.filter(invitation_sent=False).select_related('guest')
+            send_invitations(request, obj, None, [r.guest for r in pending])
+            return HttpResponseRedirect(
+                reverse('admin:seevooplay_event_change', args=(object_id,))
             )
-            send_invitations(request, obj, None, new_guests)
+
+        extra_context = extra_context or {}
+        if obj:
+            extra_context['pending_replies'] = obj.reply_set.filter(
+                invitation_sent=False
+            ).select_related('guest')
+
+        return super().change_view(request, object_id, form_url, extra_context)
+
+    def _pending_invitations_redirect(self, obj):
+        """
+        Return a redirect to the change form if there are unsent invitations, else None.
+        """
+        if obj.reply_set.filter(invitation_sent=False).exists():
+            return HttpResponseRedirect(
+                reverse('admin:seevooplay_event_change', args=(obj.pk,))
+            )
+
+    def response_post_save_add(self, request, obj):
+        """
+        Keep user on change form if there are unsent invitations.
+        """
+        return self._pending_invitations_redirect(obj) or super().response_post_save_add(request, obj)  # pragma: no cover
+
+    def response_post_save_change(self, request, obj):
+        """
+        Keep user on change form if there are unsent invitations.
+        """
+        return self._pending_invitations_redirect(obj) or super().response_post_save_change(request, obj)
 
 
 @admin.register(Guest)

@@ -41,6 +41,7 @@ def make_event(guests, **kwargs):
     event = Event.objects.create(**defaults)
     if guests:
         event.guests.add(*guests)
+        Reply.objects.filter(event=event).update(invitation_sent=True)
     return event
 
 
@@ -117,6 +118,7 @@ def big_event(
         guest3, guest4, guest5, guest6, guest7, guest8,
         guest9, guest10, guest11, guest12
     )
+    Reply.objects.filter(event=event).update(invitation_sent=True)
     # set some varying replies
     reply_guest1 = Reply.objects.get(guest=guest1)
     reply_guest1.status = 'Y'
