@@ -56,7 +56,9 @@ omit = [
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py{311,312,313,314}-django{52,60}
+envlist =
+    py311-django52
+    py{312,313,314}-django{52,60}
 
 [testenv]
 package = editable
@@ -69,5 +71,7 @@ deps =
     pytest-randomly
     beautifulsoup4
     Werkzeug
+setenv =
+    DJANGO_SETTINGS_MODULE = config.settings.test
 commands = pytest {posargs}
 """
