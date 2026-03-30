@@ -1,6 +1,6 @@
 [project]
 name = "seevooplay"
-version = "2.0.0"
+version = "2.0.1"
 description = "Seevooplay is a Django app for online invitations and RSVPs."
 authors = [{ name = "Matthew Newton", email = "matthewn@mahnamahna.net" }]
 requires-python = ">=3.11, <4"
