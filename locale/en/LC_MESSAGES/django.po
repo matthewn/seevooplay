@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seevooplay 2.00\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-26 12:51-0700\n"
+"POT-Creation-Date: 2026-03-30 15:06-0700\n"
 "PO-Revision-Date: 2026-03-17 16:18-0700\n"
 "Last-Translator: Matthew Newton <matthewn@mahnamahna.net>\n"
 "Language-Team: English <matthewn@mahnamahna.net>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: seevooplay/admin.py:93
+#: seevooplay/admin.py:94
 #, python-format
 msgid "%(email)s is not a valid email address."
 msgstr ""
@@ -114,15 +114,15 @@ msgstr ""
 msgid "Replies"
 msgstr ""
 
-#: seevooplay/templates/admin/seevooplay/event/change_form.html:10
+#: seevooplay/templates/admin/seevooplay/event/change_form.html:9
 msgid "Email Guests"
 msgstr ""
 
-#: seevooplay/templates/admin/seevooplay/event/change_form.html:22
+#: seevooplay/templates/admin/seevooplay/event/change_form.html:20
 msgid "Invitations pending for:"
 msgstr ""
 
-#: seevooplay/templates/admin/seevooplay/event/change_form.html:25
+#: seevooplay/templates/admin/seevooplay/event/change_form.html:23
 msgid "Send invitations"
 msgstr ""
 
