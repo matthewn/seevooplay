@@ -19,7 +19,7 @@ def test_non_datetime_start_returns_empty():
 
 
 def test_returns_all_calendar_keys():
-    result = _generate_calendar_links('Party', START, END, 'Home', 'https', 'example.com', '/rsvp/1/')
+    result = add_to_calendar_simple('Party', START, END, 'Home', 'https', 'example.com', '/rsvp/1/')
     assert set(result.keys()) == {'google', 'yahoo', 'outlook_365', 'ics'}
 
 
@@ -57,11 +57,6 @@ def test_ics_is_data_uri():
 def test_add_to_calendar_tag_invalid_start():
     result = add_to_calendar('Party', 'not a datetime')
     assert result == ''
-
-
-def test_add_to_calendar_simple_tag():
-    result = add_to_calendar_simple('Party', START, END, 'Home', 'https', 'example.com', '/rsvp/1/')
-    assert set(result.keys()) == {'google', 'yahoo', 'outlook_365', 'ics'}
 
 
 def test_ics_contains_vcalendar_structure():
