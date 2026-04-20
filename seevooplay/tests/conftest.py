@@ -102,46 +102,11 @@ def big_event(
         guest9, guest10, guest11, guest12
     )
     Reply.objects.filter(event=event).update(invitation_sent=True)
-    # set some varying replies
-    reply_guest1 = Reply.objects.get(guest=guest1)
-    reply_guest1.status = 'Y'
-    reply_guest1.has_viewed = True
-    reply_guest1.save()
-    reply_guest2 = Reply.objects.get(guest=guest2)
-    reply_guest2.status = 'Y'
-    reply_guest2.has_viewed = True
-    reply_guest2.save()
-    reply_guest3 = Reply.objects.get(guest=guest3)
-    reply_guest3.status = 'Y'
-    reply_guest3.has_viewed = True
-    reply_guest3.save()
-    reply_guest4 = Reply.objects.get(guest=guest4)
-    reply_guest4.status = 'Y'
-    reply_guest4.has_viewed = True
-    reply_guest4.save()
-    reply_guest5 = Reply.objects.get(guest=guest5)
-    reply_guest5.status = 'M'
-    reply_guest5.has_viewed = True
-    reply_guest5.save()
-    reply_guest6 = Reply.objects.get(guest=guest6)
-    reply_guest6.status = 'M'
-    reply_guest6.has_viewed = True
-    reply_guest6.save()
-    reply_guest7 = Reply.objects.get(guest=guest7)
-    reply_guest7.status = 'M'
-    reply_guest7.has_viewed = True
-    reply_guest7.save()
-    reply_guest8 = Reply.objects.get(guest=guest8)
-    reply_guest8.status = 'N'
-    reply_guest8.has_viewed = True
-    reply_guest8.save()
-    reply_guest9 = Reply.objects.get(guest=guest9)
-    reply_guest9.status = 'N'
-    reply_guest9.has_viewed = True
-    reply_guest9.save()
-    # guest10 has viewed, but not replied
-    reply_guest10 = Reply.objects.get(guest=guest10)
-    reply_guest10.has_viewed = True
-    reply_guest10.save()
-    # guests 11 and 12 have not viewed, not replied
+    # set varying reply statuses and viewed flags
+    # (guests 11 and 12 keep the defaults: no reply, not viewed)
+    replies = Reply.objects.filter(event=event)
+    replies.filter(guest__in=[guest1, guest2, guest3, guest4]).update(status='Y', has_viewed=True)
+    replies.filter(guest__in=[guest5, guest6, guest7]).update(status='M', has_viewed=True)
+    replies.filter(guest__in=[guest8, guest9]).update(status='N', has_viewed=True)
+    replies.filter(guest=guest10).update(has_viewed=True)
     return event
