@@ -14,12 +14,10 @@ NUMBERS = [
 def create_guest_fixture(n):
     @pytest.fixture
     def guest_fixture(db):
-        guest = Guest.objects.create(
+        return Guest.objects.create(
             name=f'Guest {NUMBERS[n - 1]}',
             email=f'guest{n}@example.org'
         )
-        yield guest
-        guest.delete()
     return guest_fixture
 
 
@@ -47,63 +45,48 @@ def make_event(guests, **kwargs):
 
 @pytest.fixture
 def event(db, guest1, guest2):
-    event = make_event(
+    return make_event(
         [guest1, guest2],
         invitees='Guest One guest1@example.org, Guest Two guest2@example.org',
     )
-    yield event
-    Reply.objects.filter(event=event).delete()
-    event.delete()
 
 
 @pytest.fixture
 def past_event(db, guest1, guest2):
-    event = make_event(
+    return make_event(
         [guest1, guest2],
         name='Past Event',
         invitees='Guest One guest1@example.org, Guest Two guest2@example.org',
         start_datetime=dt.datetime(2020, 1, 1, 12, tzinfo=ZoneInfo('America/Los_Angeles')),
     )
-    yield event
-    Reply.objects.filter(event=event).delete()
-    event.delete()
 
 
 @pytest.fixture
 def same_day_event(db, guest1):
-    event = make_event(
+    return make_event(
         [guest1],
         name='Same Day Event',
         end_datetime=dt.datetime(2030, 1, 1, 15, tzinfo=ZoneInfo('America/Los_Angeles')),
     )
-    yield event
-    Reply.objects.filter(event=event).delete()
-    event.delete()
 
 
 @pytest.fixture
 def multiday_event(db, guest1):
-    event = make_event(
+    return make_event(
         [guest1],
         name='Multi Day Event',
         end_datetime=dt.datetime(2030, 1, 2, 15, tzinfo=ZoneInfo('America/Los_Angeles')),
     )
-    yield event
-    Reply.objects.filter(event=event).delete()
-    event.delete()
 
 
 @pytest.fixture
 def two_host_event(db, guest1):
-    event = make_event(
+    return make_event(
         [guest1],
         name='Two Host Event',
         host2_name='Spirit',
         host2_email='spirit@example.org',
     )
-    yield event
-    Reply.objects.filter(event=event).delete()
-    event.delete()
 
 
 @pytest.fixture
@@ -162,4 +145,3 @@ def big_event(
     reply_guest10.save()
     # guests 11 and 12 have not viewed, not replied
     return event
-    # cleanup is handled by parent fixtures
