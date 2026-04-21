@@ -1,14 +1,30 @@
 from bs4 import BeautifulSoup
 from types import SimpleNamespace
+from django.contrib.admin.sites import AdminSite
+from django.contrib.messages import get_messages
+from django.contrib.messages.middleware import MessageMiddleware
+from django.contrib.sessions.middleware import SessionMiddleware
+from django.test import RequestFactory
 from django.urls import reverse
 from seevooplay.admin import EventAdmin
-from seevooplay.models import Guest, Reply
+from seevooplay.models import Event, Guest, Reply
+
+
+def make_event_admin():
+    return EventAdmin(model=Event, admin_site=AdminSite())
+
+
+def make_request():
+    request = RequestFactory().get('/')
+    SessionMiddleware(lambda r: None).process_request(request)
+    MessageMiddleware(lambda r: None).process_request(request)
+    return request
 
 
 def test_process_invitees_empty_line(db):
     # ensure empty line in invitees doesn't generate anything
     obj = SimpleNamespace(invitees='prince@example.org,')
-    all_guests = EventAdmin.process_invitees(None, [], obj)
+    all_guests = make_event_admin().process_invitees(make_request(), obj)
     assert len(all_guests) == 1
 
 
@@ -22,7 +38,7 @@ def test_process_invitees(db):
         invitees='prince@example.org, madonna@example.org\r\n"Rip Torn" <rip_torn@example.org>\r\nTim Berners Lee tim@example.org'
     )
 
-    all_guests = EventAdmin.process_invitees(None, [], obj)
+    all_guests = make_event_admin().process_invitees(make_request(), obj)
 
     assert len(all_guests) == 4
     assert Guest.objects.count() == 4
@@ -32,19 +48,16 @@ def test_process_invitees(db):
     assert Guest.objects.filter(name='Tim Berners Lee', email='tim@example.org').exists()
 
 
-def test_process_invitees_invalid_email(monkeypatch):
-    def mock_add_message(req, level, msg):
-        captured_messages.append(msg)
-
-    monkeypatch.setattr('django.contrib.messages.add_message', mock_add_message)
-    captured_messages = []
+def test_process_invitees_invalid_email(db):
     obj = SimpleNamespace(invitees='prince@nowhere')
+    request = make_request()
 
-    all_guests = EventAdmin.process_invitees(None, [], obj)
+    all_guests = make_event_admin().process_invitees(request, obj)
 
     assert len(all_guests) == 0
-    assert len(captured_messages) == 1
-    assert captured_messages[0] == 'prince@nowhere is not a valid email address.'
+    msgs = [m.message for m in get_messages(request)]
+    assert len(msgs) == 1
+    assert msgs[0] == 'prince@nowhere is not a valid email address.'
 
 
 def test_save_model_new(db, admin_client, mailoutbox):
